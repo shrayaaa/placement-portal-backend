@@ -342,7 +342,7 @@ async function loadProfile() {
   document.getElementById('profileRoll').value = roll;
 
   try {
-    const res = await fetch(`http://placement-portal-ccoewn.onrender.com/api/student/${roll}`);
+    const res = await fetch(`https://placement-portal-ccoewn.onrender.com/api/student/${roll}`);
     if (!res.ok) {
       console.log('Profile fetch failed with status:', res.status);
       document.getElementById('profileMsg').innerText = 'Profile not found. You can create one.';
@@ -394,7 +394,7 @@ document.getElementById('profileForm').addEventListener('submit', async (e) => {
   console.log('Sending profile data:', { roll, payload }); // Debug log
 
   try {
-    const r = await fetch(`http://placement-portal-ccoewn.onrender.com/api/student/${roll}`, {
+    const r = await fetch(`https://placement-portal-ccoewn.onrender.com/api/student/${roll}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
@@ -426,7 +426,7 @@ document.getElementById('resumeFile').addEventListener('change', async (e) => {
   fd.append('resume', file);
 
   try {
-    const r = await fetch(`http://placement-portal-ccoewn.onrender.com/api/student/${roll}/resume`, {
+    const r = await fetch(`https://placement-portal-ccoewn.onrender.com/api/student/${roll}/resume`, {
       method: 'POST',
       body: fd
     });
@@ -469,8 +469,8 @@ async function loadJobs() {
 
     // Get student profile and jobs in parallel
     const [studentResponse, jobsResponse] = await Promise.all([
-      fetch(`http://placement-portal-ccoewn.onrender.com/api/student/${roll}`),
-      fetch("http://placement-portal-ccoewn.onrender.com/api/jobs")
+      fetch(`https://placement-portal-ccoewn.onrender.com/api/student/${roll}`),
+      fetch("https://placement-portal-ccoewn.onrender.com/api/jobs")
     ]);
 
     console.log("Student response status:", studentResponse.status); // Debug log
@@ -586,7 +586,7 @@ async function loadStudentEligibilityProfile() {
   }
 
   try {
-    const res = await fetch(`http://placement-portal-ccoewn.onrender.com/api/student/${roll}`);
+    const res = await fetch(`https://placement-portal-ccoewn.onrender.com/api/student/${roll}`);
     if (res.ok) {
       const data = await res.json();
       document.getElementById('studentCgpa').innerText = data.cgpa || 'Not set';
@@ -603,7 +603,7 @@ async function loadCompaniesForChecker() {
   container.innerHTML = '<p>Loading companies...</p>';
 
   try {
-    const res = await fetch('http://placement-portal-ccoewn.onrender.com/api/jobs');
+    const res = await fetch('https://placement-portal-ccoewn.onrender.com/api/jobs');
     const jobs = await res.json();
 
     if (jobs.length === 0) {
@@ -634,11 +634,11 @@ async function checkEligibility(jobId) {
 
   try {
     // Get student profile
-    const studentRes = await fetch(`http://placement-portal-ccoewn.onrender.com/api/student/${roll}`);
+    const studentRes = await fetch(`https://placement-portal-ccoewn.onrender.com/api/student/${roll}`);
     const studentData = await studentRes.json();
 
     // Get job details
-    const jobsRes = await fetch('http://placement-portal-ccoewn.onrender.com/api/jobs');
+    const jobsRes = await fetch('https://placement-portal-ccoewn.onrender.com/api/jobs');
     const jobs = await jobsRes.json();
     const job = jobs.find(j => j.id === jobId);
 
@@ -712,8 +712,8 @@ async function applyForJob(jobId) {
   // Check eligibility before applying
   try {
     const [studentResponse, jobResponse] = await Promise.all([
-      fetch(`http://placement-portal-ccoewn.onrender.com/api/student/${roll}`),
-      fetch(`http://placement-portal-ccoewn.onrender.com/api/jobs`)
+      fetch(`https://placement-portal-ccoewn.onrender.com/api/student/${roll}`),
+      fetch(`https://placement-portal-ccoewn.onrender.com/api/jobs`)
     ]);
 
     const student = await studentResponse.json();
@@ -741,7 +741,7 @@ async function applyForJob(jobId) {
       return;
     }
 
-    const response = await fetch(`http://placement-portal-ccoewn.onrender.com/api/student/${roll}/apply/${jobId}`, {
+    const response = await fetch(`https://placement-portal-ccoewn.onrender.com/api/student/${roll}/apply/${jobId}`, {
       method: 'POST'
     });
 
@@ -771,7 +771,7 @@ async function loadApplications() {
   }
 
   try {
-    const response = await fetch(`http://placement-portal-ccoewn.onrender.com/api/student/${roll}/applications`);
+    const response = await fetch(`https://placement-portal-ccoewn.onrender.com/api/student/${roll}/applications`);
     const applications = await response.json();
 
     const container = document.getElementById('appliedCompanies');
@@ -836,7 +836,7 @@ async function loadDrives() {
   container.innerHTML = "<p>Loading drives...</p>";
 
   try {
-    const response = await fetch("http://placement-portal-ccoewn.onrender.com/api/drives");
+    const response = await fetch("https://placement-portal-ccoewn.onrender.com/api/drives");
     const drives = await response.json();
 
     if (drives.length === 0) {
@@ -884,7 +884,7 @@ async function loadDrives() {
               ${drive.result_pdf ? 
                 `<div style="background:rgba(34,197,94,.1); padding:8px; border-radius:6px; margin-top:8px;">
                   <p style="margin:0; color:#22c55e;"><strong>✅ Results Available!</strong></p>
-                  <a href="http://placement-portal-ccoewn.onrender.com${drive.result_pdf}" target="_blank" class="btn primary" style="margin-top:8px; display:inline-flex; align-items:center; gap:6px;">
+                  <a href="https://placement-portal-ccoewn.onrender.com${drive.result_pdf}" target="_blank" class="btn primary" style="margin-top:8px; display:inline-flex; align-items:center; gap:6px;">
                     📄 View Results PDF
                   </a>
                 </div>` : 
@@ -923,7 +923,7 @@ async function loadStudentAnnouncements() {
   container.innerHTML = "<p>Loading announcements...</p>";
   
   try {
-    const response = await fetch("http://placement-portal-ccoewn.onrender.com/api/announcements");
+    const response = await fetch("https://placement-portal-ccoewn.onrender.com/api/announcements");
     const announcements = await response.json();
     
     container.innerHTML = "";
