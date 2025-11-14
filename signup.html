@@ -213,7 +213,7 @@ loginForm.addEventListener("submit", async (e) => {
   const password = document.getElementById("loginPassword").value;
 
   try {
-    const response = await fetch("http://localhost:5000/api/login", {
+    const response = await fetch("http://placement-portal-ccoewn.onrender.com/api/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
@@ -255,7 +255,7 @@ signupForm.addEventListener("submit", async (e) => {
   const password = document.getElementById("signupPassword").value;
 
   try {
-    const response = await fetch("http://localhost:5000/api/signup", {
+    const response = await fetch("http://placement-portal-ccoewn.onrender.com/api/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, email, rollNumber, password }),
@@ -298,7 +298,7 @@ signupForm.addEventListener("submit", async (e) => {
     const password = document.getElementById("adminLoginPassword").value;
 
     try {
-      const response = await fetch("http://localhost:5000/api/admin/login", {
+      const response = await fetch("http://placement-portal-ccoewn.onrender.com/api/admin/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -335,7 +335,7 @@ signupForm.addEventListener("submit", async (e) => {
     const password = document.getElementById("adminSignupPassword").value;
 
     try {
-      const response = await fetch("http://localhost:5000/api/admin/signup", {
+      const response = await fetch("http://placement-portal-ccoewn.onrender.com/api/admin/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password }),

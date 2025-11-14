@@ -376,7 +376,7 @@ document.getElementById('contactForm').addEventListener('submit', async function
     showMessage('Sending message...', 'info');
     
     // Send data to backend
-    const response = await fetch('http://localhost:5000/api/contact', {
+    const response = await fetch('http://placement-portal-ccoewn.onrender.com/api/contact', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

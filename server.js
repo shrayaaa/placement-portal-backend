@@ -466,7 +466,7 @@ app.post('/api/student/:roll_number/resume', upload.single('resume'), async (req
   if (!req.file) return res.status(400).json({ message: 'No file uploaded' });
 
   try {
-    const resumeUrl = `http://localhost:5000/uploads/${req.file.filename}`; // absolute URL
+    const resumeUrl = `http://placement-portal-ccoewn.onrender.com/uploads/${req.file.filename}`; // absolute URL
     // Upsert resume_url
     await db.execute(
       `INSERT INTO student_profiles (roll_number, resume_url)

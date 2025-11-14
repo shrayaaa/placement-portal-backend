@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (!roll_number) return;
 
   try {
-    const res = await fetch(`http://localhost:5000/api/student/${roll_number}`);
+    const res = await fetch(`http://placement-portal-ccoewn.onrender.com/api/student/${roll_number}`);
     if (res.ok) {
       const data = await res.json();
       document.getElementById("phone").value = data.phone || "";
@@ -47,7 +47,7 @@ document.getElementById("profileForm").addEventListener("submit", async (e) => {
   const resume_url = document.getElementById("resume").value.trim();
 
   try {
-    const res = await fetch(`http://localhost:5000/api/student/${roll_number}`, {
+    const res = await fetch(`http://placement-portal-ccoewn.onrender.com/api/student/${roll_number}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ phone, skills, cgpa, resume_url })
