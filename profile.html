@@ -1,0 +1,63 @@
+<h2>Student Profile</h2>
+<form id="profileForm">
+  <label>Phone:</label>
+  <input type="text" id="phone"><br>
+
+  <label>Skills:</label>
+  <textarea id="skills"></textarea><br>
+
+  <label>CGPA:</label>
+  <input type="number" step="0.01" id="cgpa"><br>
+
+  <label>Resume URL:</label>
+  <input type="text" id="resume"><br>
+
+  <button type="submit">Save Profile</button>
+</form>
+
+<div id="profileMessage"></div>
+<script>
+    // Load existing profile when page opens
+document.addEventListener("DOMContentLoaded", async () => {
+  const roll_number = localStorage.getItem("studentRollNo"); // store this at login/signup
+  if (!roll_number) return;
+
+  try {
+    const res = await fetch(`http://localhost:5000/api/student/${roll_number}`);
+    if (res.ok) {
+      const data = await res.json();
+      document.getElementById("phone").value = data.phone || "";
+      document.getElementById("skills").value = data.skills || "";
+      document.getElementById("cgpa").value = data.cgpa || "";
+      document.getElementById("resume").value = data.resume_url || "";
+    }
+  } catch (err) {
+    console.error("Error fetching profile:", err);
+  }
+});
+
+// Save profile
+document.getElementById("profileForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const roll_number = localStorage.getItem("studentRollNo");
+
+  const phone = document.getElementById("phone").value.trim();
+  const skills = document.getElementById("skills").value.trim();
+  const cgpa = document.getElementById("cgpa").value;
+  const resume_url = document.getElementById("resume").value.trim();
+
+  try {
+    const res = await fetch(`http://localhost:5000/api/student/${roll_number}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ phone, skills, cgpa, resume_url })
+    });
+
+    const data = await res.json();
+    document.getElementById("profileMessage").innerText = data.message;
+  } catch (err) {
+    console.error("Error updating profile:", err);
+  }
+});
+
+</script>

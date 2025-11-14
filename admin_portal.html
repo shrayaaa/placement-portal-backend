@@ -1,0 +1,2103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin Placement Portal</title>
+  <style>
+    :root{
+      --bg:#0f172a; --card:#111827; --muted:#c9c8c6; --ink:#e5e7eb; --brand:#f97316; --brand-2:#fb923c;
+      --ok:#22c55e; --bd:#1f2937;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0; font:15px/1.5 system-ui,Segoe UI,Roboto,Arial; color:var(--ink); background:linear-gradient(180deg,#0b1023,#0f172a)}
+
+    /* Header */
+    header{
+      position:sticky; top:0; z-index:50;
+      display:flex; align-items:center; gap:14px;
+      padding:12px 18px; background:#0b1023; border-bottom:1px solid var(--bd);
+    }
+    .brand{display:flex; align-items:center; gap:10px; font-weight:700}
+    .brand-badge{width:34px; height:34px; display:grid; place-items:center; border-radius:8px;
+      background:linear-gradient(135deg,var(--brand),var(--brand-2)); font-weight:900}
+    .grow{flex:1}
+    .search{max-width:420px; width:100%; position:relative}
+    .search input{width:100%; padding:10px 12px 10px 36px; border-radius:10px; border:1px solid var(--bd); background:#0b1023; color:var(--ink)}
+    .search svg{position:absolute; left:10px; top:50%; transform:translateY(-50%); opacity:.7}
+
+    /* Layout */
+    .wrap{display:grid; grid-template-columns:260px 1fr; gap:18px; max-width:1200px; margin:18px auto; padding:0 16px}
+    @media (max-width:900px){ .wrap{grid-template-columns:1fr} nav{order:2} main{order:1} }
+
+    /* Sidebar */
+    nav{background:rgba(17,24,39,.75); border:1px solid var(--bd); border-radius:16px; padding:10px}
+    .nav-title{padding:10px 12px; color:var(--muted); font-size:12px; text-transform:uppercase; letter-spacing:.08em}
+    .nav-item{display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:10px; cursor:pointer; color:#cbd5e1}
+    .nav-item:hover{background:#0b1023}
+    .nav-item.active{background:linear-gradient(135deg,rgba(249,115,22,.25),rgba(251,146,60,.15)); border:1px solid rgba(249,115,22,.35)}
+    .nav-item svg{opacity:.9}
+
+    /* Content cards */
+    main{display:grid; gap:18px}
+    .card{background:rgba(17,24,39,.75); border:1px solid var(--bd); border-radius:18px; overflow:hidden}
+    .card h2{margin:0; padding:14px 16px; border-bottom:1px solid var(--bd); font-size:16px; background:#0d1326}
+    .card .content{padding:16px}
+    .grid-2{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px}
+    @media (max-width:680px){ .grid-2{grid-template-columns:1fr} }
+    .tile{border:1px dashed #334155; border-radius:12px; padding:12px; background:rgba(2,6,23,.5)}
+    .tile h4{margin:0 0 6px 0; font-size:14px}
+    .muted{color:var(--muted); font-size:13px}
+
+    /* Buttons */
+    .btn{display:inline-flex; align-items:center; gap:8px; padding:10px 12px; border-radius:10px; border:1px solid var(--bd); background:#0b1023; color:var(--ink); cursor:pointer}
+    .btn.primary{border-color:rgba(249,115,22,.5); background:linear-gradient(135deg,rgba(249,115,22,.2),rgba(251,146,60,.15))}
+
+    /* Panels */
+    .panel{display:none}
+    .panel.active{display:block}
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="brand">
+      <div class="brand-badge">AP</div>
+      <div>Admin Placement Portal</div>
+    </div>
+    <div class="grow"></div>
+    <div class="search">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M21 21l-4.3-4.3M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" stroke="#94a3b8" stroke-width="2" stroke-linecap="round"/></svg>
+      <input id="search" placeholder="Search (e.g., student, job drive, report)" />
+    </div>
+    <button class="btn" id="profileBtn" title="Profile">Admin Profile</button>
+  </header>
+
+  <div class="wrap">
+    <!-- Sidebar -->
+    <nav>
+      <div class="nav-title">Admin Sections</div>
+      <div class="nav-item active" data-panel="dashboard">📊 Dashboard</div>
+      <div class="nav-item" data-panel="drives">
+        <i class="fas fa-briefcase"></i>
+        <span>Job Drives</span>
+      </div>
+      <div class="nav-item" data-panel="students">
+        <i class="fas fa-user-graduate"></i>
+        <span>Students</span>
+      </div>
+      <div class="nav-item" data-panel="announcements">
+        <i class="fas fa-bullhorn"></i>
+        <span>Announcements</span>
+      </div>
+      <div class="nav-item" data-panel="reports">
+        <i class="fas fa-chart-bar"></i>
+        <span>Reports</span>
+      </div>
+      <div class="nav-item" data-panel="applications">
+        <i class="fas fa-file-alt"></i>
+        <span>Applications</span>
+      </div>
+      <div class="nav-item" data-panel="messages">
+        <i class="fas fa-envelope"></i>
+        <span>View Messages</span>
+      </div>
+      <div class="nav-item" data-panel="settings">⚙️ Settings</div>
+    </nav>
+
+    <!-- Content -->
+    <main>
+      <!-- Dashboard -->
+      <section class="panel active" id="dashboard">
+        <div class="card">
+          <h2>Dashboard</h2>
+          
+          
+
+          <!-- Quick Actions -->
+          <div class="content">
+            <h3 style="margin-bottom: 15px; color: var(--ink);">Quick Actions</h3>
+            <div class="grid-2">
+              <div class="tile">
+                <h4>Manage Students</h4>
+                <p class="muted">View, add, or update student profiles.</p>
+                <button class="btn primary" onclick="navigateToPanel('students')">Go to Students</button>
+              </div>
+              <div class="tile">
+                <h4>Job Drives</h4>
+                <p class="muted">Post and manage upcoming recruitment drives.</p>
+                <button class="btn" onclick="navigateToPanel('drives')">Manage Drives</button>
+              </div>
+              <div class="tile">
+                <h4>Applications</h4>
+                <p class="muted">Track student applications and status.</p>
+                <button class="btn" onclick="navigateToPanel('applications')">View Applications</button>
+              </div>
+              <div class="tile">
+                <h4>Reports & Analytics</h4>
+                <p class="muted">Generate placement reports and insights.</p>
+                <button class="btn" onclick="navigateToPanel('reports')">View Reports</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Students -->
+      <section class="panel" id="students">
+        <div class="card">
+          <h2>Manage Students</h2>
+          <div class="content">
+            <p class="muted">Add, edit, or remove student records.</p>
+            <button class="btn primary" id="addStudentBtn" onclick="toggleStudentForm()">Add Student</button>
+            <button class="btn" onclick="loadStudents()" style="margin-left: 10px;">View All Students</button>
+            
+            <!-- Student Form (initially hidden) -->
+            <div id="studentForm" style="display:none; margin-top:20px; padding:16px; border:1px solid var(--bd); border-radius:12px; background:rgba(2,6,23,.5);">
+              <h4 id="studentFormTitle">Add New Student</h4>
+              <form id="createStudentForm">
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px;">
+                  <div>
+                    <label class="muted">Full Name *</label>
+                    <input id="studentName" required style="width:100%; padding:8px; border-radius:8px; border:1px solid #333; background:#081022; color:var(--ink); margin-top:4px;">
+                  </div>
+                  <div>
+                    <label class="muted">Email *</label>
+                    <input id="studentEmail" type="email" required style="width:100%; padding:8px; border-radius:8px; border:1px solid #333; background:#081022; color:var(--ink); margin-top:4px;">
+                  </div>
+                </div>
+                <div style="margin-bottom:12px;">
+                  <label class="muted">Roll Number *</label>
+                  <input id="studentRoll" required style="width:100%; padding:8px; border-radius:8px; border:1px solid #333; background:#081022; color:var(--ink); margin-top:4px;">
+                </div>
+                <div style="display:flex; gap:10px;">
+                  <button type="button" class="btn primary" onclick="submitStudentForm()">Add Student</button>
+                  <button type="button" class="btn" id="cancelStudentBtn">Cancel</button>
+                </div>
+              </form>
+              <div id="studentFormMsg" style="margin-top:10px;"></div>
+            </div>
+
+            <!-- Students List -->
+            <div id="studentsList" style="margin-top:20px;"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Announcements -->
+      <section class="panel" id="announcements">
+        <div class="card">
+          <h2>Announcements</h2>
+          <div class="content">
+            <p class="muted">Create and manage announcements for students.</p>
+            <button class="btn primary" id="addAnnouncementBtn" onclick="toggleAnnouncementForm()">Create Announcement</button>
+            <button class="btn" id="viewAnnouncementsBtn" onclick="toggleAnnouncementsList()" style="margin-left: 10px;">View All Announcements</button>
+            
+            <!-- Announcement Form (initially hidden) -->
+            <div id="announcementForm" style="display:none; margin-top:20px; padding:16px; border:1px solid var(--bd); border-radius:12px; background:rgba(2,6,23,.5);">
+              <h4 id="announcementFormTitle">Create New Announcement</h4>
+              <form id="createAnnouncementForm">
+                <div style="margin-bottom:12px;">
+                  <label class="muted">Title *</label>
+                  <input id="announcementTitle" required style="width:100%; padding:8px; border-radius:8px; border:1px solid #333; background:#081022; color:var(--ink); margin-top:4px;">
+                </div>
+                <div style="margin-bottom:12px;">
+                  <label class="muted">Content *</label>
+                  <textarea id="announcementContent" required rows="4" style="width:100%; padding:8px; border-radius:8px; border:1px solid #333; background:#081022; color:var(--ink); margin-top:4px; resize:vertical;"></textarea>
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px;">
+                  <div>
+                    <label class="muted">Priority</label>
+                    <select id="announcementPriority" style="width:100%; padding:8px; border-radius:8px; border:1px solid #333; background:#081022; color:var(--ink); margin-top:4px;">
+                      <option value="normal">Normal</option>
+                      <option value="high">High</option>
+                      <option value="urgent">Urgent</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="muted">Expiry Date</label>
+                    <input id="announcementExpiry" type="date" style="width:100%; padding:8px; border-radius:8px; border:1px solid #333; background:#081022; color:var(--ink); margin-top:4px;">
+                  </div>
+                </div>
+                <div style="display:flex; gap:10px;">
+                  <button type="button" class="btn primary" onclick="submitAnnouncementForm()">Create Announcement</button>
+                  <button type="button" class="btn" id="cancelAnnouncementBtn">Cancel</button>
+                </div>
+              </form>
+              <div id="announcementFormMsg" style="margin-top:10px;"></div>
+            </div>
+
+            <!-- Announcements List -->
+            <div id="announcementsList" style="margin-top:20px;"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Job Drives -->
+      <section class="panel" id="drives">
+        <div class="card">
+          <h2>Job Drives</h2>
+          <div class="content">
+            <p class="muted">Create and manage placement drives.</p>
+            <button class="btn primary" id="createJobBtn">Create Drive</button>
+      
+            <!-- Job Creation Form (initially hidden) -->
+            <div id="jobForm" style="display:none; margin-top:20px; padding:16px; border:1px solid var(--bd); border-radius:12px; background:rgba(2,6,23,.5);">
+              <h4>Create New Job Drive</h4>
+              <form id="createJobForm">
+                <div style="margin-bottom:12px;">
+                  <label class="muted">Company Name</label>
+                  <input id="jobCompany" required style="width:100%; padding:8px; border-radius:8px; border:1px solid #333; background:#081022; color:var(--ink); margin-top:4px;">
+                </div>
+                <div style="margin-bottom:12px;">
+                  <label class="muted">Job Role/Title</label>
+                  <input id="jobRole" required style="width:100%; padding:8px; border-radius:8px; border:1px solid #333; background:#081022; color:var(--ink); margin-top:4px;">
+                </div>
+                <div style="margin-bottom:12px;">
+                  <label class="muted">CTC/Salary</label>
+                  <input id="jobCtc" style="width:100%; padding:8px; border-radius:8px; border:1px solid #333; background:#081022; color:var(--ink); margin-top:4px;" placeholder="e.g., 5-7 LPA">
+                </div>
+                <div style="margin-bottom:12px;">
+                  <label class="muted">Eligibility Criteria</label>
+                  <input id="jobEligibility" style="width:100%; padding:8px; border-radius:8px; border:1px solid #333; background:#081022; color:var(--ink); margin-top:4px;" placeholder="e.g., CGPA > 7.0, No backlogs">
+                </div>
+                <div style="margin-bottom:12px;">
+                  <label class="muted">Application Deadline</label>
+                  <input id="jobDeadline" type="date" style="width:100%; padding:8px; border-radius:8px; border:1px solid #333; background:#081022; color:var(--ink); margin-top:4px;">
+                </div>
+                <div style="margin-bottom:12px;">
+                  <label class="muted">Job Description</label>
+                  <textarea id="jobDescription" rows="4" style="width:100%; padding:8px; border-radius:8px; border:1px solid #333; background:#081022; color:var(--ink); margin-top:4px; resize:vertical;" placeholder="Job responsibilities, requirements, etc."></textarea>
+                </div>
+                <div style="display:flex; gap:10px;">
+                  <button type="submit" class="btn primary">Post Job</button>
+                  <button type="button" class="btn" id="cancelJobBtn">Cancel</button>
+                </div>
+              </form>
+              <div id="jobFormMsg" style="margin-top:10px;"></div>
+            </div>
+
+            <!-- Job List -->
+            <div id="jobList" style="margin-top:20px;"></div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Reports -->
+      <section class="panel" id="reports">
+        <div class="card">
+          <h2>Reports & Analytics</h2>
+          <div class="content">
+            <p class="muted">View detailed reports and analytics.</p>
+            
+            <!-- Report Cards -->
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:16px; margin-top:20px;">
+              
+              <!-- Student Statistics -->
+              <div class="tile" style="cursor:pointer;" onclick="generateStudentReport()">
+                <h4><i class="fas fa-users" style="margin-right:8px; color:#3b82f6;"></i>Student Statistics</h4>
+                <p class="muted">Total registered students, department-wise breakdown</p>
+                <div style="margin-top:12px;">
+                  <span class="btn primary" style="font-size:12px;">Generate Report</span>
+                </div>
+              </div>
+
+              <!-- Job Applications Report -->
+              <div class="tile" style="cursor:pointer;" onclick="generateApplicationsReport()">
+                <h4><i class="fas fa-briefcase" style="margin-right:8px; color:#10b981;"></i>Job Applications</h4>
+                <p class="muted">Application statistics, success rates, company-wise data</p>
+                <div style="margin-top:12px;">
+                  <span class="btn primary" style="font-size:12px;">Generate Report</span>
+                </div>
+              </div>
+
+              <!-- Placement Statistics -->
+              <div class="tile" style="cursor:pointer;" onclick="generatePlacementReport()">
+                <h4><i class="fas fa-trophy" style="margin-right:8px; color:#f59e0b;"></i>Placement Stats</h4>
+                <p class="muted">Placement percentage, salary statistics, top recruiters</p>
+                <div style="margin-top:12px;">
+                  <span class="btn primary" style="font-size:12px;">Generate Report</span>
+                </div>
+              </div>
+
+              <!-- Monthly Activity -->
+              <div class="tile" style="cursor:pointer;" onclick="generateActivityReport()">
+                <h4><i class="fas fa-chart-line" style="margin-right:8px; color:#8b5cf6;"></i>Monthly Activity</h4>
+                <p class="muted">Job postings, applications, and activity trends</p>
+                <div style="margin-top:12px;">
+                  <span class="btn primary" style="font-size:12px;">Generate Report</span>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Report Display Area -->
+            <div id="reportDisplay" style="margin-top:30px; display:none;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+                <h3 id="reportTitle">Report</h3>
+                <button class="btn" onclick="closeReport()">Close Report</button>
+              </div>
+              <div id="reportContent" style="padding:20px; border:1px solid var(--bd); border-radius:12px; background:rgba(2,6,23,.3);"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Applications -->
+      <section class="panel" id="applications">
+        <div class="card">
+          <h2>Student Applications</h2>
+          <div class="content">
+            <p class="muted">Track and manage student job applications by status.</p>
+            <div style="display:flex; gap:10px; margin-bottom:20px;">
+              <button class="btn primary" id="loadAllApplicationsBtn">All Applications</button>
+              <button class="btn" id="loadAppliedBtn">Applied</button>
+              <button class="btn" id="loadShortlistedBtn">Shortlisted</button>
+              <button class="btn" id="loadSelectedBtn">Selected</button>
+              <button class="btn" id="loadRejectedBtn">Rejected</button>
+            </div>
+            <div id="applicationsList" style="margin-top:20px;"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Messages -->
+      <section class="panel" id="messages">
+        <div class="card">
+          <h2>Contact Messages</h2>
+          <div class="content">
+            <p class="muted">View and manage messages from the contact form.</p>
+            <div style="display:flex; gap:10px; margin-bottom:20px;">
+              <button class="btn primary" id="loadAllMessagesBtn">All Messages</button>
+              <button class="btn" id="loadNewMessagesBtn">New Messages</button>
+              <button class="btn" id="loadReadMessagesBtn">Read Messages</button>
+              <button class="btn" id="loadRepliedMessagesBtn">Replied Messages</button>
+            </div>
+            <div id="messagesList" style="margin-top:20px;"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Eligibility -->
+      <section class="panel" id="eligibility">
+        <div class="card">
+          <h2>Eligibility Criteria</h2>
+          <div class="content">
+            <p class="muted">Set and update eligibility rules for companies.</p>
+            <button class="btn">Manage Criteria</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Settings -->
+      <section class="panel" id="settings">
+        <div class="card">
+          <h2>Admin Settings</h2>
+          <div class="content">
+            <p class="muted">Manage admin profile and system configurations.</p>
+            
+            <!-- Settings Categories -->
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:20px; margin-top:20px;">
+              
+              <!-- Admin Profile Settings -->
+              <div class="tile">
+                <h4><i class="fas fa-user-cog" style="margin-right:8px; color:#3b82f6;"></i>Admin Profile</h4>
+                <div style="margin-top:12px;">
+                  <label class="muted" style="display:block; margin-bottom:4px;">Admin Name</label>
+                  <input id="adminName" type="text" placeholder="Enter admin name" style="width:100%; padding:8px; border-radius:6px; border:1px solid #333; background:#081022; color:var(--ink);">
+                </div>
+                <div style="margin-top:12px;">
+                  <label class="muted" style="display:block; margin-bottom:4px;">Email</label>
+                  <input id="adminEmail" type="email" placeholder="admin@college.edu" style="width:100%; padding:8px; border-radius:6px; border:1px solid #333; background:#081022; color:var(--ink);">
+                </div>
+                <div style="margin-top:12px;">
+                  <label class="muted" style="display:block; margin-bottom:4px;">Department</label>
+                  <input id="adminDept" type="text" placeholder="Placement Office" style="width:100%; padding:8px; border-radius:6px; border:1px solid #333; background:#081022; color:var(--ink);">
+                </div>
+                <button class="btn primary" style="margin-top:12px; width:100%;" onclick="updateAdminProfile()">Update Profile</button>
+              </div>
+
+              <!-- System Configuration -->
+              <div class="tile">
+                <h4><i class="fas fa-cogs" style="margin-right:8px; color:#10b981;"></i>System Configuration</h4>
+                <div style="margin-top:12px;">
+                  <label class="muted" style="display:block; margin-bottom:4px;">College Name</label>
+                  <input id="collegeName" type="text" placeholder="College Name" style="width:100%; padding:8px; border-radius:6px; border:1px solid #333; background:#081022; color:var(--ink);">
+                </div>
+                <div style="margin-top:12px;">
+                  <label class="muted" style="display:block; margin-bottom:4px;">Academic Year</label>
+                  <select id="academicYear" style="width:100%; padding:8px; border-radius:6px; border:1px solid #333; background:#081022; color:var(--ink);">
+                    <option value="2024-25">2024-25</option>
+                    <option value="2025-26">2025-26</option>
+                    <option value="2026-27">2026-27</option>
+                  </select>
+                </div>
+                <div style="margin-top:12px;">
+                  <label class="muted" style="display:block; margin-bottom:4px;">Placement Season</label>
+                  <select id="placementSeason" style="width:100%; padding:8px; border-radius:6px; border:1px solid #333; background:#081022; color:var(--ink);">
+                    <option value="active">Active</option>
+                    <option value="upcoming">Upcoming</option>
+                    <option value="closed">Closed</option>
+                  </select>
+                </div>
+                <button class="btn primary" style="margin-top:12px; width:100%;" onclick="updateSystemConfig()">Save Configuration</button>
+              </div>
+
+              <!-- Notification Settings -->
+              <div class="tile">
+                <h4><i class="fas fa-bell" style="margin-right:8px; color:#f59e0b;"></i>Notification Settings</h4>
+                <div style="margin-top:12px;">
+                  <label style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+                    <input type="checkbox" id="emailNotifications" checked>
+                    <span class="muted">Email notifications for new applications</span>
+                  </label>
+                  <label style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+                    <input type="checkbox" id="smsNotifications">
+                    <span class="muted">SMS alerts for urgent announcements</span>
+                  </label>
+                  <label style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+                    <input type="checkbox" id="dailyReports" checked>
+                    <span class="muted">Daily summary reports</span>
+                  </label>
+                </div>
+                <div style="margin-top:12px;">
+                  <label class="muted" style="display:block; margin-bottom:4px;">Report Email</label>
+                  <input id="reportEmail" type="email" placeholder="reports@college.edu" style="width:100%; padding:8px; border-radius:6px; border:1px solid #333; background:#081022; color:var(--ink);">
+                </div>
+                <button class="btn primary" style="margin-top:12px; width:100%;" onclick="updateNotificationSettings()">Save Settings</button>
+              </div>
+
+              <!-- Security Settings -->
+              <div class="tile">
+                <h4><i class="fas fa-shield-alt" style="margin-right:8px; color:#ef4444;"></i>Security Settings</h4>
+                <div style="margin-top:12px;">
+                  <label class="muted" style="display:block; margin-bottom:4px;">Change Password</label>
+                  <input id="currentPassword" type="password" placeholder="Current password" style="width:100%; padding:8px; border-radius:6px; border:1px solid #333; background:#081022; color:var(--ink); margin-bottom:8px;">
+                  <input id="newPassword" type="password" placeholder="New password" style="width:100%; padding:8px; border-radius:6px; border:1px solid #333; background:#081022; color:var(--ink); margin-bottom:8px;">
+                  <input id="confirmPassword" type="password" placeholder="Confirm password" style="width:100%; padding:8px; border-radius:6px; border:1px solid #333; background:#081022; color:var(--ink);">
+                </div>
+                <div style="margin-top:12px;">
+                  <label style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+                    <input type="checkbox" id="twoFactorAuth">
+                    <span class="muted">Enable two-factor authentication</span>
+                  </label>
+                  <label style="display:flex; align-items:center; gap:8px;">
+                    <input type="checkbox" id="sessionTimeout" checked>
+                    <span class="muted">Auto-logout after 30 minutes</span>
+                  </label>
+                </div>
+                <button class="btn primary" style="margin-top:12px; width:100%;" onclick="updateSecuritySettings()">Update Security</button>
+              </div>
+
+              <!-- Data Management -->
+              <div class="tile">
+                <h4><i class="fas fa-database" style="margin-right:8px; color:#8b5cf6;"></i>Data Management</h4>
+                <div style="margin-top:12px;">
+                  <button class="btn" style="width:100%; margin-bottom:8px;" onclick="exportData('students')">
+                    <i class="fas fa-download" style="margin-right:6px;"></i>Export Student Data
+                  </button>
+                  <button class="btn" style="width:100%; margin-bottom:8px;" onclick="exportData('applications')">
+                    <i class="fas fa-download" style="margin-right:6px;"></i>Export Applications
+                  </button>
+                  <button class="btn" style="width:100%; margin-bottom:8px;" onclick="exportData('companies')">
+                    <i class="fas fa-download" style="margin-right:6px;"></i>Export Company Data
+                  </button>
+                </div>
+                <div style="margin-top:12px; padding-top:12px; border-top:1px solid var(--bd);">
+                  <label class="muted" style="display:block; margin-bottom:4px;">Import Student Data</label>
+                  <input type="file" id="importFile" accept=".csv,.xlsx" style="width:100%; padding:8px; border-radius:6px; border:1px solid #333; background:#081022; color:var(--ink); margin-bottom:8px;">
+                  <button class="btn" style="width:100%;" onclick="importData()">
+                    <i class="fas fa-upload" style="margin-right:6px;"></i>Import Data
+                  </button>
+                </div>
+              </div>
+
+              <!-- Portal Customization -->
+              <div class="tile">
+                <h4><i class="fas fa-palette" style="margin-right:8px; color:#06b6d4;"></i>Portal Customization</h4>
+                <div style="margin-top:12px;">
+                  <label class="muted" style="display:block; margin-bottom:4px;">Portal Title</label>
+                  <input id="portalTitle" type="text" placeholder="Placement Portal" style="width:100%; padding:8px; border-radius:6px; border:1px solid #333; background:#081022; color:var(--ink); margin-bottom:8px;">
+                  
+                  <label class="muted" style="display:block; margin-bottom:4px;">Welcome Message</label>
+                  <textarea id="welcomeMessage" rows="3" placeholder="Welcome to the placement portal..." style="width:100%; padding:8px; border-radius:6px; border:1px solid #333; background:#081022; color:var(--ink); margin-bottom:8px; resize:vertical;"></textarea>
+                  
+                  <label style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+                    <input type="checkbox" id="maintenanceMode">
+                    <span class="muted">Enable maintenance mode</span>
+                  </label>
+                </div>
+                <button class="btn primary" style="margin-top:12px; width:100%;" onclick="updatePortalSettings()">Save Customization</button>
+              </div>
+
+            </div>
+
+            <!-- Settings Status Message -->
+            <div id="settingsMessage" style="margin-top:20px; padding:12px; border-radius:8px; display:none;"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // Sidebar nav
+    const navItems = document.querySelectorAll('.nav-item');
+    const panels = document.querySelectorAll('.panel');
+    navItems.forEach(item=>{
+      item.addEventListener('click', ()=>{
+        navItems.forEach(n=>n.classList.remove('active'));
+        item.classList.add('active');
+        const id = item.dataset.panel;
+        panels.forEach(p=>p.classList.toggle('active', p.id === id));
+        document.getElementById('search').value = '';
+        
+        // Clear student list when switching panels
+        const studentsList = document.getElementById("studentsList");
+        if (studentsList && id !== 'students') {
+          studentsList.innerHTML = "";
+        }
+        
+        // Hide student form when switching panels
+        const studentForm = document.getElementById("studentForm");
+        const addStudentBtn = document.getElementById("addStudentBtn");
+        if (studentForm && id !== 'students') {
+          studentForm.style.display = "none";
+          if (addStudentBtn) addStudentBtn.innerText = "Add Student";
+        }
+      });
+    });
+
+    // Navigate to panel function for dashboard buttons
+    function navigateToPanel(panelId) {
+      // Update navigation
+      navItems.forEach(n => n.classList.remove('active'));
+      const targetNavItem = document.querySelector(`[data-panel="${panelId}"]`);
+      if (targetNavItem) {
+        targetNavItem.classList.add('active');
+      }
+      
+      // Update panels
+      panels.forEach(p => p.classList.toggle('active', p.id === panelId));
+      
+      // Clear search
+      document.getElementById('search').value = '';
+      
+      // Clear student list when switching panels
+      const studentsList = document.getElementById("studentsList");
+      if (studentsList && panelId !== 'students') {
+        studentsList.innerHTML = "";
+      }
+      
+      // Hide student form when switching panels
+      const studentForm = document.getElementById("studentForm");
+      const addStudentBtn = document.getElementById("addStudentBtn");
+      if (studentForm && panelId !== 'students') {
+        studentForm.style.display = "none";
+        if (addStudentBtn) addStudentBtn.innerText = "Add Student";
+      }
+      
+      // Load data for specific panels
+      if (panelId === 'drives') {
+        loadJobs();
+      } else if (panelId === 'applications') {
+        loadApplications();
+      } else if (panelId === 'dashboard') {
+        loadDashboardStats();
+      }
+    }
+
+    // Load dashboard statistics
+    async function loadDashboardStats() {
+      try {
+        // Load students count
+        const studentsResponse = await fetch("http://localhost:5000/api/admin/students");
+        const students = await studentsResponse.json();
+        document.getElementById("totalStudents").textContent = students.length;
+
+        // Load announcements count
+        const announcementsResponse = await fetch("http://localhost:5000/api/announcements");
+        const announcements = await announcementsResponse.json();
+        document.getElementById("totalAnnouncements").textContent = announcements.length;
+
+        // For jobs and applications, show placeholder counts (can be implemented later)
+        document.getElementById("totalJobs").textContent = "5"; // Placeholder
+        document.getElementById("totalApplications").textContent = "23"; // Placeholder
+
+      } catch (error) {
+        console.error("Error loading dashboard stats:", error);
+        document.getElementById("totalStudents").textContent = "0";
+        document.getElementById("totalJobs").textContent = "0";
+        document.getElementById("totalApplications").textContent = "0";
+        document.getElementById("totalAnnouncements").textContent = "0";
+      }
+    }
+
+    // Search filter
+    const search = document.getElementById('search');
+    search.addEventListener('input', ()=>{
+      const q = search.value.trim().toLowerCase();
+      const activePanel = document.querySelector('.panel.active');
+      const tiles = activePanel.querySelectorAll('.tile');
+      tiles.forEach(t=>{
+        const text = t.innerText.toLowerCase();
+        t.style.display = text.includes(q) ? '' : 'none';
+      });
+    });
+
+    async function loadJobs() {
+  const jobList = document.getElementById("jobList");
+  jobList.innerHTML = "<p class='muted'>Loading jobs...</p>";
+
+  try {
+    const res = await fetch("http://localhost:5000/api/jobs");
+    const jobs = await res.json();
+
+    if (jobs.length === 0) {
+      jobList.innerHTML = "<p class='muted'>No jobs posted yet.</p>";
+      return;
+    }
+
+    jobList.innerHTML = jobs.map(job => `
+      <div class="tile" data-job-id="${job.id}">
+        <h4>${job.role || job.title} at ${job.company_name || job.company}</h4>
+        <p class="muted">${job.location || "Location not specified"} | ${job.ctc || job.salary || "Salary not disclosed"}</p>
+        <p><strong>Eligibility:</strong> ${job.eligibility || "Not specified"}</p>
+        <p><strong>Deadline:</strong> ${job.deadline || "Not specified"}</p>
+        <p>${job.description}</p>
+        <p class="muted">Posted on: ${new Date(job.created_at || job.posted_at).toLocaleDateString()}</p>
+        <div style="margin-top:12px;">
+          <button class="btn delete-job-btn" style="background:#dc2626; border-color:#dc2626; color:white;" data-job-id="${job.id}">Delete Job</button>
+        </div>
+      </div>
+    `).join("");
+  } catch (err) {
+    console.error("Error loading jobs:", err);
+    jobList.innerHTML = "<p class='muted'>Failed to load jobs.</p>";
+  }
+}
+
+// Load jobs when "Job Drives" panel is opened
+document.querySelector('[data-panel="drives"]').addEventListener("click", loadJobs);
+
+// Load applications when "Applications" panel is opened
+document.querySelector('[data-panel="applications"]').addEventListener("click", () => loadApplications());
+
+// Load messages when "Messages" panel is opened
+document.querySelector('[data-panel="messages"]').addEventListener("click", () => loadMessages());
+
+// Load applications buttons
+document.getElementById('loadAllApplicationsBtn').addEventListener('click', () => loadApplications());
+document.getElementById('loadAppliedBtn').addEventListener('click', () => loadApplications('applied'));
+document.getElementById('loadShortlistedBtn').addEventListener('click', () => loadApplications('shortlisted'));
+document.getElementById('loadSelectedBtn').addEventListener('click', () => loadApplications('selected'));
+document.getElementById('loadRejectedBtn').addEventListener('click', () => loadApplications('rejected'));
+
+// Load messages buttons
+document.getElementById('loadAllMessagesBtn').addEventListener('click', () => loadMessages());
+document.getElementById('loadNewMessagesBtn').addEventListener('click', () => loadMessages('new'));
+document.getElementById('loadReadMessagesBtn').addEventListener('click', () => loadMessages('read'));
+document.getElementById('loadRepliedMessagesBtn').addEventListener('click', () => loadMessages('replied'));
+
+// Add event listener for delete buttons and status updates using event delegation
+document.addEventListener('click', function(e) {
+  if (e.target.classList.contains('delete-job-btn')) {
+    const jobId = e.target.getAttribute('data-job-id');
+    console.log("Delete button clicked for job ID:", jobId); // Debug log
+    deleteJob(jobId);
+  }
+  
+  if (e.target.classList.contains('status-btn')) {
+    const appId = e.target.getAttribute('data-app-id');
+    const newStatus = e.target.getAttribute('data-status');
+    updateApplicationStatus(appId, newStatus);
+  }
+  
+  if (e.target.classList.contains('message-status-btn')) {
+    const messageId = e.target.getAttribute('data-message-id');
+    const newStatus = e.target.getAttribute('data-status');
+    updateMessageStatus(messageId, newStatus);
+  }
+  
+  if (e.target.classList.contains('delete-message-btn')) {
+    const messageId = e.target.getAttribute('data-message-id');
+    deleteMessage(messageId);
+  }
+});
+
+// Load applications function with optional status filter
+async function loadApplications(status = null) {
+  const applicationsList = document.getElementById("applicationsList");
+  applicationsList.innerHTML = "<p class='muted'>Loading applications...</p>";
+
+  try {
+    const url = status 
+      ? `http://localhost:5000/api/admin/applications/${status}`
+      : "http://localhost:5000/api/admin/applications";
+    
+    const res = await fetch(url);
+    const applications = await res.json();
+
+    if (applications.length === 0) {
+      const statusText = status ? `${status} applications` : 'applications';
+      applicationsList.innerHTML = `<p class='muted'>No ${statusText} found.</p>`;
+      return;
+    }
+
+    // Group applications by status for better organization
+    const groupedApps = applications.reduce((groups, app) => {
+      const status = app.status;
+      if (!groups[status]) groups[status] = [];
+      groups[status].push(app);
+      return groups;
+    }, {});
+
+    let html = '';
+    
+    // If showing all applications, group by status
+    if (!status) {
+      const statusOrder = ['applied', 'shortlisted', 'selected', 'rejected'];
+      statusOrder.forEach(statusKey => {
+        if (groupedApps[statusKey] && groupedApps[statusKey].length > 0) {
+          html += `<h3 style="color:var(--brand); margin:20px 0 10px 0;">${statusKey.charAt(0).toUpperCase() + statusKey.slice(1)} (${groupedApps[statusKey].length})</h3>`;
+          html += renderApplications(groupedApps[statusKey]);
+        }
+      });
+    } else {
+      html = renderApplications(applications);
+    }
+
+    applicationsList.innerHTML = html;
+  } catch (err) {
+    console.error("Error loading applications:", err);
+    applicationsList.innerHTML = "<p class='muted'>Failed to load applications.</p>";
+  }
+}
+
+function renderApplications(applications) {
+  return applications.map(app => `
+    <div class="tile" style="margin-bottom:16px;">
+      <h4>${app.student_name || app.roll_number} - ${app.company_name}</h4>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:8px 0;">
+        <div>
+          <p class="muted"><strong>Roll Number:</strong> ${app.roll_number}</p>
+          <p class="muted"><strong>Department:</strong> ${app.department || 'Not specified'}</p>
+          <p class="muted"><strong>CGPA:</strong> ${app.cgpa || 'Not specified'}</p>
+        </div>
+        <div>
+          <p class="muted"><strong>Job Role:</strong> ${app.role}</p>
+          <p class="muted"><strong>CTC:</strong> ${app.ctc || 'Not specified'}</p>
+          <p class="muted"><strong>Applied on:</strong> ${new Date(app.applied_at).toLocaleDateString()}</p>
+        </div>
+      </div>
+      <div style="margin:12px 0;">
+        <span class="muted">Current Status: </span>
+        <span class="chip ${getStatusColor(app.status)}" style="padding:4px 8px; border-radius:6px; font-size:12px; font-weight:bold;">
+          ${app.status.charAt(0).toUpperCase() + app.status.slice(1)}
+        </span>
+      </div>
+      ${app.status === 'applied' ? `
+        <div style="display:flex; gap:8px; margin-top:12px;">
+          <button class="btn status-btn" data-app-id="${app.id}" data-status="shortlisted" style="background:#22c55e; border-color:#22c55e; color:white; font-size:12px;">Shortlist</button>
+          <button class="btn status-btn" data-app-id="${app.id}" data-status="selected" style="background:#3b82f6; border-color:#3b82f6; color:white; font-size:12px;">Select</button>
+          <button class="btn status-btn" data-app-id="${app.id}" data-status="rejected" style="background:#dc2626; border-color:#dc2626; color:white; font-size:12px;">Reject</button>
+        </div>
+      ` : `
+        <p class="muted" style="font-style:italic;">Status updated on: ${new Date(app.updated_at).toLocaleDateString()}</p>
+      `}
+    </div>
+  `).join("");
+}
+
+// Update application status
+async function updateApplicationStatus(appId, newStatus) {
+  try {
+    const res = await fetch(`http://localhost:5000/api/admin/applications/${appId}/status`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: newStatus })
+    });
+
+    if (res.ok) {
+      alert(`Application status updated to: ${newStatus}`);
+      loadApplications(); // Refresh the list
+    } else {
+      const error = await res.json();
+      alert(`Error: ${error.message}`);
+    }
+  } catch (err) {
+    console.error("Error updating status:", err);
+    alert("Failed to update application status");
+  }
+}
+
+function getStatusColor(status) {
+  switch(status) {
+    case 'applied': return '';
+    case 'shortlisted': return 'ok';
+    case 'selected': return 'ok';
+    case 'rejected': return '';
+    default: return '';
+  }
+}
+
+// ==================== JOB DRIVES FUNCTIONALITY ====================
+
+// Load jobs list
+async function loadJobs() {
+  try {
+    const response = await fetch("http://localhost:5000/api/jobs");
+    const jobs = await response.json();
+    
+    const jobList = document.getElementById("jobList");
+    
+    if (jobs.length === 0) {
+      jobList.innerHTML = "<p class='muted'>No jobs posted yet.</p>";
+      return;
+    }
+    
+    jobList.innerHTML = jobs.map(job => `
+      <div class="tile" style="margin-bottom:12px;">
+        <div style="display:flex; justify-content:space-between; align-items:start;">
+          <div style="flex:1;">
+            <h4>${job.company || job.company_name} - ${job.title || job.role}</h4>
+            <p class="muted">💰 CTC: ${job.salary || job.ctc || "Not specified"}</p>
+            ${job.eligibility ? `<p class="muted">✅ Eligibility: ${job.eligibility}</p>` : ''}
+            ${job.deadline ? `<p class="muted">⏰ Deadline: ${new Date(job.deadline).toLocaleDateString()}</p>` : ''}
+            ${job.description ? `<p>${job.description}</p>` : ''}
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button class="btn" onclick="deleteJob(${job.id})" style="font-size:12px; padding:6px 10px; background:#dc2626; border-color:#dc2626;">Delete</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  } catch (err) {
+    console.error("Error loading jobs:", err);
+    document.getElementById("jobList").innerHTML = "<p style='color:salmon'>Error loading jobs</p>";
+  }
+}
+
+// Show/hide job creation form
+document.getElementById("createJobBtn").addEventListener("click", () => {
+  const form = document.getElementById("jobForm");
+  const btn = document.getElementById("createJobBtn");
+  if (form.style.display === "none") {
+    form.style.display = "block";
+    btn.innerText = "Hide Form";
+  } else {
+    form.style.display = "none";
+    btn.innerText = "Create Drive";
+  }
+});
+
+document.getElementById("cancelJobBtn").addEventListener("click", () => {
+  document.getElementById("jobForm").style.display = "none";
+  document.getElementById("createJobBtn").innerText = "Create Drive";
+  document.getElementById("createJobForm").reset();
+  document.getElementById("jobFormMsg").innerText = "";
+});
+
+// Handle job creation form submission
+document.getElementById("createJobForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  
+  const jobData = {
+    title: document.getElementById("jobRole").value.trim(),
+    company: document.getElementById("jobCompany").value.trim(),
+    location: "Not specified",
+    salary: document.getElementById("jobCtc").value.trim(),
+    description: document.getElementById("jobDescription").value.trim(),
+    eligibility: document.getElementById("jobEligibility").value.trim(),
+    deadline: document.getElementById("jobDeadline").value
+  };
+
+  if (!jobData.title || !jobData.company) {
+    document.getElementById("jobFormMsg").innerText = "Company and role are required";
+    document.getElementById("jobFormMsg").style.color = "salmon";
+    return;
+  }
+
+  const msgDiv = document.getElementById("jobFormMsg");
+  msgDiv.innerText = "Creating job...";
+  msgDiv.style.color = "orange";
+
+  try {
+    const response = await fetch("http://localhost:5000/api/admin/jobs", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(jobData)
+    });
+
+    const result = await response.json();
+    
+    if (response.ok) {
+      msgDiv.style.color = "lightgreen";
+      msgDiv.innerText = "Job posted successfully!";
+      document.getElementById("createJobForm").reset();
+      
+      // Hide form and reload jobs list
+      setTimeout(() => {
+        document.getElementById("jobForm").style.display = "none";
+        document.getElementById("createJobBtn").innerText = "Create Drive";
+        loadJobs(); // Refresh the jobs list
+      }, 1500);
+    } else {
+      msgDiv.style.color = "salmon";
+      msgDiv.innerText = result.message || "Failed to post job";
+    }
+  } catch (err) {
+    console.error("Error posting job:", err);
+    msgDiv.style.color = "salmon";
+    msgDiv.innerText = "Error posting job. Please try again.";
+  }
+});
+
+// Delete job function
+async function deleteJob(jobId) {
+  if (!confirm("Are you sure you want to delete this job? This action cannot be undone.")) {
+    return;
+  }
+
+  try {
+    const response = await fetch(`http://localhost:5000/api/admin/jobs/${jobId}`, {
+      method: "DELETE"
+    });
+
+    const result = await response.json();
+    
+    if (response.ok) {
+      loadJobs(); // Refresh the list
+    } else {
+      alert(result.message || "Failed to delete job");
+    }
+  } catch (err) {
+    console.error("Error deleting job:", err);
+    alert("Error deleting job. Please try again.");
+  }
+}
+
+// Load jobs when drives panel is clicked
+document.querySelector('.nav-item[data-panel="drives"]').addEventListener('click', loadJobs);
+
+// ==================== DRIVES MANAGEMENT ====================
+
+// Load drives list
+async function loadDrives() {
+  try {
+    const response = await fetch("http://localhost:5000/api/drives");
+    const drives = await response.json();
+    
+    const drivesList = document.getElementById("drivesList");
+    
+    if (drives.length === 0) {
+      drivesList.innerHTML = "<p class='muted'>No drives added yet.</p>";
+      return;
+    }
+    
+    drivesList.innerHTML = drives.map(drive => `
+      <div class="tile" style="margin-bottom:12px;">
+        <div style="display:flex; justify-content:space-between; align-items:start;">
+          <div style="flex:1;">
+            <h4>${drive.company_name}</h4>
+            <p class="muted">📅 ${new Date(drive.drive_date).toLocaleDateString()} ${drive.drive_time ? `at ${drive.drive_time}` : ''}</p>
+            ${drive.venue ? `<p class="muted">📍 ${drive.venue}</p>` : ''}
+            ${drive.eligibility_criteria ? `<p class="muted">✅ ${drive.eligibility_criteria}</p>` : ''}
+            ${drive.registration_deadline ? `<p class="muted">⏰ Registration deadline: ${new Date(drive.registration_deadline).toLocaleDateString()}</p>` : ''}
+            ${drive.description ? `<p>${drive.description}</p>` : ''}
+            ${drive.announcement ? `<div style="background:rgba(251,146,60,.1); padding:8px; border-radius:6px; margin-top:8px;"><strong>📢 Announcement:</strong> ${drive.announcement}</div>` : ''}
+            ${drive.result_pdf ? `<p class="muted">📄 <a href="http://localhost:5000${drive.result_pdf}" target="_blank" style="color:#93c5fd;">View Results PDF</a></p>` : ''}
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button class="btn" onclick="editDrive(${drive.id})" style="font-size:12px; padding:6px 10px;">Edit</button>
+            <button class="btn" onclick="deleteDrive(${drive.id})" style="font-size:12px; padding:6px 10px; background:#dc2626; border-color:#dc2626;">Delete</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  } catch (err) {
+    console.error("Error loading drives:", err);
+    document.getElementById("drivesList").innerHTML = "<p style='color:salmon'>Error loading drives</p>";
+  }
+}
+
+// Show/hide drive form
+document.getElementById("createDriveBtn").addEventListener("click", () => {
+  const form = document.getElementById("driveForm");
+  const btn = document.getElementById("createDriveBtn");
+  
+  if (form.style.display === "none") {
+    form.style.display = "block";
+    btn.innerText = "Cancel";
+    document.getElementById("driveFormTitle").innerText = "Add New Drive";
+    document.getElementById("driveSubmitBtn").innerText = "Add Drive";
+    document.getElementById("createDriveForm").reset();
+    document.getElementById("driveId").value = "";
+    document.getElementById("currentResultPdf").innerHTML = "";
+  } else {
+    form.style.display = "none";
+    btn.innerText = "Add New Drive";
+  }
+});
+
+document.getElementById("cancelDriveBtn").addEventListener("click", () => {
+  document.getElementById("driveForm").style.display = "none";
+  document.getElementById("createDriveBtn").innerText = "Add New Drive";
+});
+
+// Submit drive form
+document.getElementById("createDriveForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  
+  const msgDiv = document.getElementById("driveFormMsg");
+  msgDiv.innerText = "Processing...";
+  msgDiv.style.color = "orange";
+  
+  const driveId = document.getElementById("driveId").value;
+  const isEdit = driveId !== "";
+  
+  const formData = new FormData();
+  formData.append("company_name", document.getElementById("driveCompany").value);
+  formData.append("drive_date", document.getElementById("driveDate").value);
+  formData.append("drive_time", document.getElementById("driveTime").value);
+  formData.append("venue", document.getElementById("driveVenue").value);
+  formData.append("description", document.getElementById("driveDescription").value);
+  formData.append("eligibility_criteria", document.getElementById("driveEligibility").value);
+  formData.append("registration_deadline", document.getElementById("driveDeadline").value);
+  formData.append("contact_info", document.getElementById("driveContact").value);
+  formData.append("announcement", document.getElementById("driveAnnouncement").value);
+  
+  const resultPdfFile = document.getElementById("driveResultPdf").files[0];
+  if (resultPdfFile) {
+    formData.append("result_pdf", resultPdfFile);
+  } else if (isEdit) {
+    // Keep existing PDF if no new file uploaded
+    formData.append("existing_result_pdf", document.getElementById("currentResultPdf").dataset.currentPdf || "");
+  }
+  
+  try {
+    const url = isEdit ? `http://localhost:5000/api/admin/drives/${driveId}` : "http://localhost:5000/api/admin/drives";
+    const method = isEdit ? "PUT" : "POST";
+    
+    const response = await fetch(url, {
+      method: method,
+      body: formData
+    });
+    
+    const result = await response.json();
+    
+    if (response.ok) {
+      msgDiv.style.color = "lightgreen";
+      msgDiv.innerText = isEdit ? "Drive updated successfully!" : "Drive added successfully!";
+      
+      setTimeout(() => {
+        document.getElementById("driveForm").style.display = "none";
+        document.getElementById("createDriveBtn").innerText = "Add New Drive";
+        loadDrives();
+      }, 1500);
+    } else {
+      msgDiv.style.color = "salmon";
+      msgDiv.innerText = result.message || "Failed to save drive";
+    }
+  } catch (err) {
+    console.error("Error saving drive:", err);
+    msgDiv.style.color = "salmon";
+    msgDiv.innerText = "Error saving drive. Please try again.";
+  }
+});
+
+// Edit drive function
+async function editDrive(driveId) {
+  try {
+    const response = await fetch("http://localhost:5000/api/drives");
+    const drives = await response.json();
+    const drive = drives.find(d => d.id === driveId);
+    
+    if (!drive) {
+      alert("Drive not found");
+      return;
+    }
+    
+    // Populate form with drive data
+    document.getElementById("driveId").value = drive.id;
+    document.getElementById("driveCompany").value = drive.company_name;
+    document.getElementById("driveDate").value = drive.drive_date.split('T')[0]; // Format date
+    document.getElementById("driveTime").value = drive.drive_time || "";
+    document.getElementById("driveVenue").value = drive.venue || "";
+    document.getElementById("driveDescription").value = drive.description || "";
+    document.getElementById("driveEligibility").value = drive.eligibility_criteria || "";
+    document.getElementById("driveDeadline").value = drive.registration_deadline ? drive.registration_deadline.split('T')[0] : "";
+    document.getElementById("driveContact").value = drive.contact_info || "";
+    document.getElementById("driveAnnouncement").value = drive.announcement || "";
+    
+    // Show current PDF if exists
+    const currentPdfDiv = document.getElementById("currentResultPdf");
+    if (drive.result_pdf) {
+      currentPdfDiv.innerHTML = `Current: <a href="http://localhost:5000${drive.result_pdf}" target="_blank" style="color:#93c5fd;">View Current PDF</a>`;
+      currentPdfDiv.dataset.currentPdf = drive.result_pdf;
+    } else {
+      currentPdfDiv.innerHTML = "No PDF uploaded";
+      currentPdfDiv.dataset.currentPdf = "";
+    }
+    
+    // Show form in edit mode
+    document.getElementById("driveForm").style.display = "block";
+    document.getElementById("driveFormTitle").innerText = "Edit Drive";
+    document.getElementById("driveSubmitBtn").innerText = "Update Drive";
+    document.getElementById("createDriveBtn").innerText = "Cancel";
+    
+  } catch (err) {
+    console.error("Error loading drive for edit:", err);
+    alert("Error loading drive data");
+  }
+}
+
+// Delete drive function
+async function deleteDrive(driveId) {
+  if (!confirm("Are you sure you want to delete this drive? This action cannot be undone.")) {
+    return;
+  }
+  
+  try {
+    const response = await fetch(`http://localhost:5000/api/admin/drives/${driveId}`, {
+      method: "DELETE"
+    });
+    
+    const result = await response.json();
+    
+    if (response.ok) {
+      loadDrives(); // Refresh the list
+    } else {
+      alert(result.message || "Failed to delete drive");
+    }
+  } catch (err) {
+    console.error("Error deleting drive:", err);
+    alert("Error deleting drive. Please try again.");
+  }
+}
+
+// Load drives when drives panel is clicked
+document.querySelector('.nav-item[data-panel="drives"]').addEventListener('click', loadDrives);
+
+// ==================== STUDENT MANAGEMENT ====================
+
+// Load students list
+async function loadStudents() {
+  try {
+    const response = await fetch("http://localhost:5000/api/admin/students");
+    const students = await response.json();
+    
+    const studentsList = document.getElementById("studentsList");
+    
+    if (students.length === 0) {
+      studentsList.innerHTML = "<p class='muted'>No students registered yet.</p>";
+      return;
+    }
+    
+    studentsList.innerHTML = students.map(student => `
+      <div class="tile" style="margin-bottom:12px;">
+        <div style="display:flex; justify-content:space-between; align-items:start;">
+          <div style="flex:1;">
+            <h4>${student.name}</h4>
+            <p class="muted"> ${student.email}</p>
+            <p class="muted"> Roll Number: ${student.roll_number}</p>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button class="btn" onclick="editStudent('${student.roll_number}')" style="font-size:12px; padding:6px 10px;">Edit</button>
+            <button class="btn" onclick="deleteStudent('${student.roll_number}')" style="font-size:12px; padding:6px 10px; background:#dc2626; border-color:#dc2626;">Delete</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  } catch (err) {
+    console.error("Error loading students:", err);
+    document.getElementById("studentsList").innerHTML = "<p style='color:salmon'>Error loading students</p>";
+  }
+}
+
+// Student management initialization
+function initStudentManagement() {
+  const addStudentBtn = document.getElementById("addStudentBtn");
+  
+  if (addStudentBtn) {
+    addStudentBtn.onclick = function() {
+      const form = document.getElementById("studentForm");
+      const btn = document.getElementById("addStudentBtn");
+      const studentsList = document.getElementById("studentsList");
+      
+      // Always clear students list first
+      if (studentsList) studentsList.innerHTML = "";
+      
+      if (form.style.display === "none" || form.style.display === "") {
+        form.style.display = "block";
+        btn.innerText = "Cancel";
+        document.getElementById("studentFormTitle").innerText = "Add New Student";
+        document.getElementById("createStudentForm").reset();
+        document.getElementById("studentFormMsg").innerText = "";
+        form.dataset.mode = "add";
+      } else {
+        form.style.display = "none";
+        btn.innerText = "Add Student";
+      }
+    };
+  }
+
+  const cancelStudentBtn = document.getElementById("cancelStudentBtn");
+  if (cancelStudentBtn) {
+    cancelStudentBtn.onclick = function() {
+      document.getElementById("studentForm").style.display = "none";
+      document.getElementById("addStudentBtn").innerText = "Add Student";
+    };
+  }
+}
+
+// Initialize when DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initStudentManagement);
+} else {
+  initStudentManagement();
+}
+
+// Removed broken form event listener - using direct onclick instead
+
+// Edit student function
+async function editStudent(rollNumber) {
+  try {
+    const response = await fetch("http://localhost:5000/api/admin/students");
+    const students = await response.json();
+    const student = students.find(s => s.roll_number === rollNumber);
+    
+    if (student) {
+      document.getElementById("studentName").value = student.name;
+      document.getElementById("studentEmail").value = student.email;
+      document.getElementById("studentRoll").value = student.roll_number;
+      
+      const form = document.getElementById("studentForm");
+      form.style.display = "block";
+      form.dataset.mode = "edit";
+      form.dataset.originalRoll = rollNumber;
+      
+      document.getElementById("studentFormTitle").innerText = "Edit Student";
+      document.getElementById("addStudentBtn").innerText = "Cancel";
+      document.getElementById("studentFormMsg").innerText = "";
+    }
+    
+  } catch (err) {
+    console.error("Error loading student for edit:", err);
+    alert("Error loading student data");
+  }
+}
+
+// Delete student function
+async function deleteStudent(rollNumber) {
+  if (!confirm("Are you sure you want to delete this student? This action cannot be undone.")) {
+    return;
+  }
+  
+  try {
+    const response = await fetch(`http://localhost:5000/api/admin/students/${rollNumber}`, {
+      method: "DELETE"
+    });
+    
+    const result = await response.json();
+    
+    if (response.ok) {
+      loadStudents(); // Refresh the list
+    } else {
+      alert(result.message || "Failed to delete student");
+    }
+  } catch (err) {
+    console.error("Error deleting student:", err);
+    alert("Error deleting student. Please try again.");
+  }
+}
+
+// Initialize student management when students panel is clicked
+document.addEventListener('DOMContentLoaded', function() {
+  const studentsNavItem = document.querySelector('.nav-item[data-panel="students"]');
+  if (studentsNavItem) {
+    studentsNavItem.addEventListener('click', function() {
+      // Only re-initialize student management, don't auto-load students
+      setTimeout(initStudentManagement, 100);
+    });
+  }
+});
+
+// Direct function for button click
+function toggleStudentForm() {
+  const form = document.getElementById("studentForm");
+  const btn = document.getElementById("addStudentBtn");
+  const studentsList = document.getElementById("studentsList");
+  
+  // Always clear the students list first
+  if (studentsList) studentsList.innerHTML = "";
+  
+  if (form.style.display === "none" || form.style.display === "") {
+    form.style.display = "block";
+    btn.innerText = "Cancel";
+    document.getElementById("studentFormTitle").innerText = "Add New Student";
+    document.getElementById("createStudentForm").reset();
+    document.getElementById("studentFormMsg").innerText = "";
+    form.dataset.mode = "add";
+  } else {
+    form.style.display = "none";
+    btn.innerText = "Add Student";
+  }
+}
+
+// Direct form submission function
+async function submitStudentForm() {
+  console.log("Direct form submission called");
+  
+  const msgDiv = document.getElementById("studentFormMsg");
+  msgDiv.innerText = "Processing...";
+  msgDiv.style.color = "orange";
+  
+  const studentData = {
+    name: document.getElementById("studentName").value.trim(),
+    email: document.getElementById("studentEmail").value.trim(),
+    roll_number: document.getElementById("studentRoll").value.trim()
+  };
+
+  if (!studentData.name || !studentData.email || !studentData.roll_number) {
+    msgDiv.innerText = "All fields are required";
+    msgDiv.style.color = "salmon";
+    return;
+  }
+
+  try {
+    const response = await fetch("http://localhost:5000/api/admin/students", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(studentData)
+    });
+
+    const result = await response.json();
+
+    if (response.ok) {
+      msgDiv.style.color = "lightgreen";
+      msgDiv.innerText = "Student added successfully!";
+      document.getElementById("createStudentForm").reset();
+      
+      setTimeout(() => {
+        document.getElementById("studentForm").style.display = "none";
+        document.getElementById("addStudentBtn").innerText = "Add Student";
+        // Don't auto-load students after form submission
+      }, 1500);
+    } else {
+      msgDiv.style.color = "salmon";
+      msgDiv.innerText = result.message || "Failed to add student";
+    }
+  } catch (err) {
+    console.error("Error adding student:", err);
+    msgDiv.style.color = "salmon";
+    msgDiv.innerText = "Error adding student. Please try again.";
+  }
+}
+
+// ==================== ANNOUNCEMENTS MANAGEMENT ====================
+
+// Toggle announcement form
+function toggleAnnouncementForm() {
+  const form = document.getElementById("announcementForm");
+  const btn = document.getElementById("addAnnouncementBtn");
+  const announcementsList = document.getElementById("announcementsList");
+  
+  // Clear announcements list first
+  if (announcementsList) announcementsList.innerHTML = "";
+  
+  if (form.style.display === "none" || form.style.display === "") {
+    form.style.display = "block";
+    btn.innerText = "Cancel";
+    document.getElementById("announcementFormTitle").innerText = "Create New Announcement";
+    document.getElementById("createAnnouncementForm").reset();
+    document.getElementById("announcementFormMsg").innerText = "";
+    form.dataset.mode = "add";
+  } else {
+    form.style.display = "none";
+    btn.innerText = "Create Announcement";
+  }
+}
+
+// Submit announcement form
+async function submitAnnouncementForm() {
+  const msgDiv = document.getElementById("announcementFormMsg");
+  msgDiv.innerText = "Processing...";
+  msgDiv.style.color = "orange";
+  
+  const announcementData = {
+    title: document.getElementById("announcementTitle").value.trim(),
+    content: document.getElementById("announcementContent").value.trim(),
+    priority: document.getElementById("announcementPriority").value,
+    expiry_date: document.getElementById("announcementExpiry").value || null,
+    created_at: new Date().toISOString()
+  };
+
+  if (!announcementData.title || !announcementData.content) {
+    msgDiv.innerText = "Title and content are required";
+    msgDiv.style.color = "salmon";
+    return;
+  }
+
+  try {
+    const response = await fetch("http://localhost:5000/api/admin/announcements", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(announcementData)
+    });
+
+    const result = await response.json();
+
+    if (response.ok) {
+      msgDiv.style.color = "lightgreen";
+      msgDiv.innerText = "Announcement created successfully!";
+      document.getElementById("createAnnouncementForm").reset();
+      
+      setTimeout(() => {
+        document.getElementById("announcementForm").style.display = "none";
+        document.getElementById("addAnnouncementBtn").innerText = "Create Announcement";
+      }, 1500);
+    } else {
+      msgDiv.style.color = "salmon";
+      msgDiv.innerText = result.message || "Failed to create announcement";
+    }
+  } catch (err) {
+    console.error("Error creating announcement:", err);
+    msgDiv.style.color = "salmon";
+    msgDiv.innerText = "Error creating announcement. Please try again.";
+  }
+}
+
+// Toggle announcements list visibility
+function toggleAnnouncementsList() {
+  const container = document.getElementById("announcementsList");
+  const btn = document.getElementById("viewAnnouncementsBtn");
+  const form = document.getElementById("announcementForm");
+  
+  // Hide form if visible
+  if (form.style.display === "block") {
+    form.style.display = "none";
+    document.getElementById("addAnnouncementBtn").innerText = "Create Announcement";
+  }
+  
+  if (container.innerHTML === "" || container.style.display === "none") {
+    loadAnnouncements();
+    btn.innerText = "Hide Announcements";
+  } else {
+    container.innerHTML = "";
+    btn.innerText = "View All Announcements";
+  }
+}
+
+// Load announcements
+async function loadAnnouncements() {
+  try {
+    const response = await fetch("http://localhost:5000/api/admin/announcements");
+    const announcements = await response.json();
+    
+    const container = document.getElementById("announcementsList");
+    container.innerHTML = "";
+    container.style.display = "block";
+    
+    if (announcements.length === 0) {
+      container.innerHTML = "<p class='muted'>No announcements found.</p>";
+      return;
+    }
+    
+    announcements.forEach(announcement => {
+      const priorityColor = announcement.priority === 'urgent' ? '#ef4444' : 
+                           announcement.priority === 'high' ? '#f59e0b' : '#6b7280';
+      
+      const announcementDiv = document.createElement("div");
+      announcementDiv.className = "tile";
+      announcementDiv.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:start; margin-bottom:8px;">
+          <h4 style="margin:0;">${announcement.title}</h4>
+          <span style="background:${priorityColor}; color:white; padding:2px 8px; border-radius:4px; font-size:12px; text-transform:uppercase;">
+            ${announcement.priority}
+          </span>
+        </div>
+        <p style="margin:8px 0;">${announcement.content}</p>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px;">
+          <small class="muted">Created: ${new Date(announcement.created_at).toLocaleDateString()}</small>
+          <div>
+            <button class="btn" onclick="editAnnouncement(${announcement.id})" style="margin-right:8px;">Edit</button>
+            <button class="btn" onclick="deleteAnnouncement(${announcement.id})" style="background:#ef4444;">Delete</button>
+          </div>
+        </div>
+      `;
+      container.appendChild(announcementDiv);
+    });
+  } catch (err) {
+    console.error("Error loading announcements:", err);
+    document.getElementById("announcementsList").innerHTML = "<p style='color:salmon'>Error loading announcements</p>";
+  }
+}
+
+// Delete announcement
+async function deleteAnnouncement(id) {
+  if (!confirm("Are you sure you want to delete this announcement?")) return;
+  
+  try {
+    const response = await fetch(`http://localhost:5000/api/admin/announcements/${id}`, {
+      method: "DELETE"
+    });
+    
+    const result = await response.json();
+    
+    if (response.ok) {
+      loadAnnouncements(); // Refresh the list
+    } else {
+      alert(result.message || "Failed to delete announcement");
+    }
+  } catch (err) {
+    console.error("Error deleting announcement:", err);
+    alert("Error deleting announcement. Please try again.");
+  }
+}
+
+// ==================== REPORTS MANAGEMENT ====================
+
+// Generate student report
+async function generateStudentReport() {
+  const reportDisplay = document.getElementById("reportDisplay");
+  const reportTitle = document.getElementById("reportTitle");
+  const reportContent = document.getElementById("reportContent");
+  
+  reportTitle.innerText = "Student Statistics Report";
+  reportContent.innerHTML = "<p>Loading student statistics...</p>";
+  reportDisplay.style.display = "block";
+  
+  try {
+    const response = await fetch("http://localhost:5000/api/admin/reports/students");
+    const data = await response.json();
+    
+    reportContent.innerHTML = `
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:16px; margin-bottom:20px;">
+        <div style="text-align:center; padding:16px; border:1px solid var(--bd); border-radius:8px;">
+          <h3 style="color:#3b82f6; margin:0;">${data.totalStudents || 0}</h3>
+          <p class="muted">Total Students</p>
+        </div>
+        <div style="text-align:center; padding:16px; border:1px solid var(--bd); border-radius:8px;">
+          <h3 style="color:#10b981; margin:0;">${data.activeStudents || 0}</h3>
+          <p class="muted">Active Students</p>
+        </div>
+        <div style="text-align:center; padding:16px; border:1px solid var(--bd); border-radius:8px;">
+          <h3 style="color:#f59e0b; margin:0;">${data.averageCGPA || 'N/A'}</h3>
+          <p class="muted">Average CGPA</p>
+        </div>
+      </div>
+      <h4>Recent Registrations</h4>
+      <div style="max-height:300px; overflow-y:auto;">
+        ${data.recentStudents ? data.recentStudents.map(student => `
+          <div style="padding:8px; border-bottom:1px solid var(--bd);">
+            <strong>${student.name}</strong> - ${student.email} (${student.roll_number})
+          </div>
+        `).join('') : '<p class="muted">No recent registrations</p>'}
+      </div>
+    `;
+  } catch (err) {
+    reportContent.innerHTML = `<p style="color:salmon">Error loading student report: ${err.message}</p>`;
+  }
+}
+
+// Generate applications report
+async function generateApplicationsReport() {
+  const reportDisplay = document.getElementById("reportDisplay");
+  const reportTitle = document.getElementById("reportTitle");
+  const reportContent = document.getElementById("reportContent");
+  
+  reportTitle.innerText = "Job Applications Report";
+  reportContent.innerHTML = "<p>Loading applications statistics...</p>";
+  reportDisplay.style.display = "block";
+  
+  try {
+    const response = await fetch("http://localhost:5000/api/admin/reports/applications");
+    const data = await response.json();
+    
+    reportContent.innerHTML = `
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:16px; margin-bottom:20px;">
+        <div style="text-align:center; padding:16px; border:1px solid var(--bd); border-radius:8px;">
+          <h3 style="color:#3b82f6; margin:0;">${data.totalApplications || 0}</h3>
+          <p class="muted">Total Applications</p>
+        </div>
+        <div style="text-align:center; padding:16px; border:1px solid var(--bd); border-radius:8px;">
+          <h3 style="color:#10b981; margin:0;">${data.successfulApplications || 0}</h3>
+          <p class="muted">Successful</p>
+        </div>
+        <div style="text-align:center; padding:16px; border:1px solid var(--bd); border-radius:8px;">
+          <h3 style="color:#f59e0b; margin:0;">${data.pendingApplications || 0}</h3>
+          <p class="muted">Pending</p>
+        </div>
+      </div>
+      <h4>Application Status Breakdown</h4>
+      <p class="muted">Detailed application statistics and trends would be displayed here.</p>
+    `;
+  } catch (err) {
+    reportContent.innerHTML = `<p style="color:salmon">Error loading applications report: ${err.message}</p>`;
+  }
+}
+
+// Generate placement report
+async function generatePlacementReport() {
+  const reportDisplay = document.getElementById("reportDisplay");
+  const reportTitle = document.getElementById("reportTitle");
+  const reportContent = document.getElementById("reportContent");
+  
+  reportTitle.innerText = "Placement Statistics Report";
+  reportContent.innerHTML = "<p>Loading placement statistics...</p>";
+  reportDisplay.style.display = "block";
+  
+  reportContent.innerHTML = `
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:16px; margin-bottom:20px;">
+      <div style="text-align:center; padding:16px; border:1px solid var(--bd); border-radius:8px;">
+        <h3 style="color:#10b981; margin:0;">85%</h3>
+        <p class="muted">Placement Rate</p>
+      </div>
+      <div style="text-align:center; padding:16px; border:1px solid var(--bd); border-radius:8px;">
+        <h3 style="color:#3b82f6; margin:0;">₹6.5L</h3>
+        <p class="muted">Average Package</p>
+      </div>
+      <div style="text-align:center; padding:16px; border:1px solid var(--bd); border-radius:8px;">
+        <h3 style="color:#f59e0b; margin:0;">₹25L</h3>
+        <p class="muted">Highest Package</p>
+      </div>
+    </div>
+    <h4>Top Recruiters</h4>
+    <p class="muted">Microsoft, Google, Amazon, TCS, Infosys, Wipro, Accenture</p>
+  `;
+}
+
+// Generate activity report
+async function generateActivityReport() {
+  const reportDisplay = document.getElementById("reportDisplay");
+  const reportTitle = document.getElementById("reportTitle");
+  const reportContent = document.getElementById("reportContent");
+  
+  reportTitle.innerText = "Monthly Activity Report";
+  reportContent.innerHTML = "<p>Loading activity statistics...</p>";
+  reportDisplay.style.display = "block";
+  
+  reportContent.innerHTML = `
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:16px; margin-bottom:20px;">
+      <div style="text-align:center; padding:16px; border:1px solid var(--bd); border-radius:8px;">
+        <h3 style="color:#3b82f6; margin:0;">12</h3>
+        <p class="muted">Job Drives This Month</p>
+      </div>
+      <div style="text-align:center; padding:16px; border:1px solid var(--bd); border-radius:8px;">
+        <h3 style="color:#10b981; margin:0;">245</h3>
+        <p class="muted">Applications Submitted</p>
+      </div>
+      <div style="text-align:center; padding:16px; border:1px solid var(--bd); border-radius:8px;">
+        <h3 style="color:#8b5cf6; margin:0;">18</h3>
+        <p class="muted">Students Placed</p>
+      </div>
+    </div>
+    <h4>Activity Trends</h4>
+    <p class="muted">Monthly activity trends and patterns would be displayed here with charts and graphs.</p>
+  `;
+}
+
+// Close report
+function closeReport() {
+  document.getElementById("reportDisplay").style.display = "none";
+}
+
+// ==================== SETTINGS MANAGEMENT ====================
+
+// Update admin profile
+async function updateAdminProfile() {
+  const profileData = {
+    name: document.getElementById("adminName").value.trim(),
+    email: document.getElementById("adminEmail").value.trim(),
+    department: document.getElementById("adminDept").value.trim()
+  };
+
+  if (!profileData.name || !profileData.email) {
+    showSettingsMessage("Name and email are required", "error");
+    return;
+  }
+
+  try {
+    // For now, save to localStorage (can be replaced with API call)
+    localStorage.setItem("adminProfile", JSON.stringify(profileData));
+    showSettingsMessage("Admin profile updated successfully!", "success");
+  } catch (err) {
+    showSettingsMessage("Error updating profile", "error");
+  }
+}
+
+// Update system configuration
+async function updateSystemConfig() {
+  const configData = {
+    collegeName: document.getElementById("collegeName").value.trim(),
+    academicYear: document.getElementById("academicYear").value,
+    placementSeason: document.getElementById("placementSeason").value
+  };
+
+  try {
+    localStorage.setItem("systemConfig", JSON.stringify(configData));
+    showSettingsMessage("System configuration saved successfully!", "success");
+  } catch (err) {
+    showSettingsMessage("Error saving configuration", "error");
+  }
+}
+
+// Update notification settings
+async function updateNotificationSettings() {
+  const notificationData = {
+    emailNotifications: document.getElementById("emailNotifications").checked,
+    smsNotifications: document.getElementById("smsNotifications").checked,
+    dailyReports: document.getElementById("dailyReports").checked,
+    reportEmail: document.getElementById("reportEmail").value.trim()
+  };
+
+  try {
+    localStorage.setItem("notificationSettings", JSON.stringify(notificationData));
+    showSettingsMessage("Notification settings saved successfully!", "success");
+  } catch (err) {
+    showSettingsMessage("Error saving notification settings", "error");
+  }
+}
+
+// Update security settings
+async function updateSecuritySettings() {
+  const currentPassword = document.getElementById("currentPassword").value;
+  const newPassword = document.getElementById("newPassword").value;
+  const confirmPassword = document.getElementById("confirmPassword").value;
+
+  if (newPassword && newPassword !== confirmPassword) {
+    showSettingsMessage("New passwords do not match", "error");
+    return;
+  }
+
+  if (newPassword && newPassword.length < 6) {
+    showSettingsMessage("Password must be at least 6 characters", "error");
+    return;
+  }
+
+  const securityData = {
+    twoFactorAuth: document.getElementById("twoFactorAuth").checked,
+    sessionTimeout: document.getElementById("sessionTimeout").checked,
+    passwordChanged: newPassword ? true : false
+  };
+
+  try {
+    localStorage.setItem("securitySettings", JSON.stringify(securityData));
+    
+    // Clear password fields
+    document.getElementById("currentPassword").value = "";
+    document.getElementById("newPassword").value = "";
+    document.getElementById("confirmPassword").value = "";
+    
+    showSettingsMessage("Security settings updated successfully!", "success");
+  } catch (err) {
+    showSettingsMessage("Error updating security settings", "error");
+  }
+}
+
+// Export data functionality
+async function exportData(type) {
+  try {
+    let data = [];
+    let filename = "";
+
+    switch(type) {
+      case 'students':
+        const studentsResponse = await fetch("http://localhost:5000/api/admin/students");
+        data = await studentsResponse.json();
+        filename = `students_${new Date().toISOString().split('T')[0]}.json`;
+        break;
+      case 'applications':
+        // Placeholder for applications export
+        data = [{ message: "Applications export functionality to be implemented" }];
+        filename = `applications_${new Date().toISOString().split('T')[0]}.json`;
+        break;
+      case 'companies':
+        // Placeholder for companies export
+        data = [{ message: "Companies export functionality to be implemented" }];
+        filename = `companies_${new Date().toISOString().split('T')[0]}.json`;
+        break;
+    }
+
+    // Create and download file
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    showSettingsMessage(`${type} data exported successfully!`, "success");
+  } catch (err) {
+    showSettingsMessage(`Error exporting ${type} data`, "error");
+  }
+}
+
+// Import data functionality
+async function importData() {
+  const fileInput = document.getElementById("importFile");
+  const file = fileInput.files[0];
+
+  if (!file) {
+    showSettingsMessage("Please select a file to import", "error");
+    return;
+  }
+
+  try {
+    const text = await file.text();
+    const data = JSON.parse(text);
+    
+    // Placeholder for import logic
+    console.log("Import data:", data);
+    
+    showSettingsMessage("Data import functionality to be implemented", "info");
+  } catch (err) {
+    showSettingsMessage("Error importing data. Please check file format.", "error");
+  }
+}
+
+// Update portal customization
+async function updatePortalSettings() {
+  const portalData = {
+    title: document.getElementById("portalTitle").value.trim(),
+    welcomeMessage: document.getElementById("welcomeMessage").value.trim(),
+    maintenanceMode: document.getElementById("maintenanceMode").checked
+  };
+
+  try {
+    localStorage.setItem("portalSettings", JSON.stringify(portalData));
+    showSettingsMessage("Portal customization saved successfully!", "success");
+  } catch (err) {
+    showSettingsMessage("Error saving portal settings", "error");
+  }
+}
+
+// Show settings message
+function showSettingsMessage(message, type) {
+  const msgDiv = document.getElementById("settingsMessage");
+  msgDiv.style.display = "block";
+  msgDiv.innerText = message;
+  
+  // Set colors based on type
+  switch(type) {
+    case 'success':
+      msgDiv.style.backgroundColor = "rgba(34, 197, 94, 0.1)";
+      msgDiv.style.color = "#22c55e";
+      msgDiv.style.border = "1px solid rgba(34, 197, 94, 0.3)";
+      break;
+    case 'error':
+      msgDiv.style.backgroundColor = "rgba(239, 68, 68, 0.1)";
+      msgDiv.style.color = "#ef4444";
+      msgDiv.style.border = "1px solid rgba(239, 68, 68, 0.3)";
+      break;
+    case 'info':
+      msgDiv.style.backgroundColor = "rgba(59, 130, 246, 0.1)";
+      msgDiv.style.color = "#3b82f6";
+      msgDiv.style.border = "1px solid rgba(59, 130, 246, 0.3)";
+      break;
+  }
+
+  // Auto-hide after 3 seconds
+  setTimeout(() => {
+    msgDiv.style.display = "none";
+  }, 3000);
+}
+
+// Load saved settings on page load
+function loadSavedSettings() {
+  try {
+    // Load admin profile
+    const adminProfile = JSON.parse(localStorage.getItem("adminProfile") || "{}");
+    if (adminProfile.name) document.getElementById("adminName").value = adminProfile.name;
+    if (adminProfile.email) document.getElementById("adminEmail").value = adminProfile.email;
+    if (adminProfile.department) document.getElementById("adminDept").value = adminProfile.department;
+
+    // Load system config
+    const systemConfig = JSON.parse(localStorage.getItem("systemConfig") || "{}");
+    if (systemConfig.collegeName) document.getElementById("collegeName").value = systemConfig.collegeName;
+    if (systemConfig.academicYear) document.getElementById("academicYear").value = systemConfig.academicYear;
+    if (systemConfig.placementSeason) document.getElementById("placementSeason").value = systemConfig.placementSeason;
+
+    // Load notification settings
+    const notificationSettings = JSON.parse(localStorage.getItem("notificationSettings") || "{}");
+    if (notificationSettings.emailNotifications !== undefined) document.getElementById("emailNotifications").checked = notificationSettings.emailNotifications;
+    if (notificationSettings.smsNotifications !== undefined) document.getElementById("smsNotifications").checked = notificationSettings.smsNotifications;
+    if (notificationSettings.dailyReports !== undefined) document.getElementById("dailyReports").checked = notificationSettings.dailyReports;
+    if (notificationSettings.reportEmail) document.getElementById("reportEmail").value = notificationSettings.reportEmail;
+
+    // Load security settings
+    const securitySettings = JSON.parse(localStorage.getItem("securitySettings") || "{}");
+    if (securitySettings.twoFactorAuth !== undefined) document.getElementById("twoFactorAuth").checked = securitySettings.twoFactorAuth;
+    if (securitySettings.sessionTimeout !== undefined) document.getElementById("sessionTimeout").checked = securitySettings.sessionTimeout;
+
+    // Load portal settings
+    const portalSettings = JSON.parse(localStorage.getItem("portalSettings") || "{}");
+    if (portalSettings.title) document.getElementById("portalTitle").value = portalSettings.title;
+    if (portalSettings.welcomeMessage) document.getElementById("welcomeMessage").value = portalSettings.welcomeMessage;
+    if (portalSettings.maintenanceMode !== undefined) document.getElementById("maintenanceMode").checked = portalSettings.maintenanceMode;
+  } catch (err) {
+    console.error("Error loading saved settings:", err);
+  }
+}
+
+// ==================== MESSAGES MANAGEMENT ====================
+
+// Load messages function with optional status filter
+async function loadMessages(status = null) {
+  const messagesList = document.getElementById("messagesList");
+  messagesList.innerHTML = "<p class='muted'>Loading messages...</p>";
+
+  try {
+    const url = status 
+      ? `http://localhost:5000/api/admin/contact-messages?status=${status}`
+      : "http://localhost:5000/api/admin/contact-messages";
+    
+    const res = await fetch(url);
+    const messages = await res.json();
+
+    if (messages.length === 0) {
+      const statusText = status ? `${status} messages` : 'messages';
+      messagesList.innerHTML = `<p class='muted'>No ${statusText} found.</p>`;
+      return;
+    }
+
+    // Group messages by status for better organization
+    const groupedMessages = messages.reduce((groups, message) => {
+      const status = message.status;
+      if (!groups[status]) groups[status] = [];
+      groups[status].push(message);
+      return groups;
+    }, {});
+
+    let html = '';
+    
+    // If showing all messages, group by status
+    if (!status) {
+      const statusOrder = ['new', 'read', 'replied'];
+      statusOrder.forEach(statusKey => {
+        if (groupedMessages[statusKey] && groupedMessages[statusKey].length > 0) {
+          html += `<h3 style="color:var(--brand); margin:20px 0 10px 0;">${statusKey.charAt(0).toUpperCase() + statusKey.slice(1)} (${groupedMessages[statusKey].length})</h3>`;
+          html += renderMessages(groupedMessages[statusKey]);
+        }
+      });
+    } else {
+      html = renderMessages(messages);
+    }
+
+    messagesList.innerHTML = html;
+  } catch (err) {
+    console.error("Error loading messages:", err);
+    messagesList.innerHTML = "<p class='muted'>Failed to load messages.</p>";
+  }
+}
+
+function renderMessages(messages) {
+  return messages.map(message => `
+    <div class="tile" style="margin-bottom:16px;">
+      <div style="display:flex; justify-content:space-between; align-items:start; margin-bottom:8px;">
+        <h4 style="margin:0;">${message.name}</h4>
+        <span class="chip ${getMessageStatusColor(message.status)}" style="padding:4px 8px; border-radius:6px; font-size:12px; font-weight:bold;">
+          ${message.status.charAt(0).toUpperCase() + message.status.slice(1)}
+        </span>
+      </div>
+      
+      <div style="margin:8px 0;">
+        <p class="muted"><strong>Email:</strong> ${message.email}</p>
+        <p class="muted"><strong>Subject:</strong> ${message.subject}</p>
+        <p class="muted"><strong>Received:</strong> ${new Date(message.created_at).toLocaleString()}</p>
+      </div>
+      
+      <div style="background:rgba(2,6,23,.3); padding:12px; border-radius:8px; margin:12px 0;">
+        <p style="margin:0; line-height:1.5;">${message.message}</p>
+      </div>
+      
+      <div style="display:flex; gap:8px; margin-top:12px;">
+        ${message.status === 'new' ? `
+          <button class="btn message-status-btn" data-message-id="${message.id}" data-status="read" style="background:#3b82f6; border-color:#3b82f6; color:white; font-size:12px;">Mark as Read</button>
+        ` : ''}
+        ${message.status === 'read' ? `
+          <button class="btn message-status-btn" data-message-id="${message.id}" data-status="replied" style="background:#22c55e; border-color:#22c55e; color:white; font-size:12px;">Mark as Replied</button>
+        ` : ''}
+        <button class="btn delete-message-btn" data-message-id="${message.id}" style="background:#dc2626; border-color:#dc2626; color:white; font-size:12px;">Delete</button>
+      </div>
+    </div>
+  `).join("");
+}
+
+function getMessageStatusColor(status) {
+  switch(status) {
+    case 'new': return '';
+    case 'read': return 'ok';
+    case 'replied': return 'ok';
+    default: return '';
+  }
+}
+
+// Update message status
+async function updateMessageStatus(messageId, newStatus) {
+  try {
+    const res = await fetch(`http://localhost:5000/api/admin/contact-messages/${messageId}/status`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: newStatus })
+    });
+
+    if (res.ok) {
+      alert(`Message status updated to: ${newStatus}`);
+      loadMessages(); // Refresh the list
+    } else {
+      const error = await res.json();
+      alert(`Error: ${error.message}`);
+    }
+  } catch (err) {
+    console.error("Error updating message status:", err);
+    alert("Failed to update message status");
+  }
+}
+
+// Delete message function
+async function deleteMessage(messageId) {
+  if (!confirm("Are you sure you want to delete this message? This action cannot be undone.")) {
+    return;
+  }
+
+  try {
+    const response = await fetch(`http://localhost:5000/api/admin/contact-messages/${messageId}`, {
+      method: "DELETE"
+    });
+
+    const result = await response.json();
+    
+    if (response.ok) {
+      loadMessages(); // Refresh the list
+    } else {
+      alert(result.message || "Failed to delete message");
+    }
+  } catch (err) {
+    console.error("Error deleting message:", err);
+    alert("Error deleting message. Please try again.");
+  }
+}
+
+// Also initialize when page loads
+document.addEventListener('DOMContentLoaded', function() {
+  setTimeout(initStudentManagement, 500);
+  setTimeout(loadSavedSettings, 600);
+  setTimeout(loadDashboardStats, 700);
+});
+
+
+  </script>
+</body>
+</html>

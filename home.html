@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Training and Placement cell, CCOEW Nagpur</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      height: 100%;
+    }
+
+    /* Header */
+    header {
+      background-color: #f58822;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      height: 30px;
+    }
+
+    header .logo {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+header .logo img {
+  width: 90px;
+  height: 65px;     /* Adjust size of logo */
+  margin-right: 12px; /* Space between logo and text */
+}
+
+    header nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: -30px;
+      font-size: 17px;
+      transition: color 0.3s;
+      margin-right: 60px
+    }
+
+    header nav a:hover {
+      color: #28345b;
+    }
+
+    /* Background section */
+    .hero {
+      background: url('e_cell_ccoew_cover-Photoroom.png') no-repeat center center/cover;
+      height: 70vh;
+      display: flex;
+      align-items: center;
+      justify-content: left;
+      padding-left: 60px;
+      color: white;
+      position: relative;
+    }
+
+    /* Overlay for better text visibility */
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.4);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 600px;
+    }
+
+    .hero-content h1 {
+      font-size: 36px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .hero-content p {
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    /* Buttons */
+    .buttons {
+      position: absolute;
+      right: 240px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .buttons a {
+  display: inline-block;
+  text-align: center;
+  background-color: #f58822;   /* transparent background */
+  color: white;                    /* text color */
+  padding: 20px 50px;
+  border-radius: 8px;
+  font-size: 16px;
+  text-decoration: none;
+  box-shadow: none;                 /* remove shadow if you want cleaner look */
+  border: 2px solid white;          /* outline border */
+  transition: all 0.3s ease;
+}
+
+.buttons a:hover {
+  background-color: white;          /* fill on hover */
+  color: #f58822;                   /* text changes to match theme */
+}
+/* Section Styling */
+.quick-stats {
+  background: #f8f9fa;
+  padding: 50px 20px;
+  text-align: center;
+}
+
+.quick-stats h2 {
+  font-size: 28px;
+  margin-bottom: 30px;
+  color: #f58822;
+}
+
+/* Stats Grid */
+.stats-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 40px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* Stat Card */
+.stat-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 30px 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease-in-out;
+}
+
+.stat-card:hover {
+  transform: translateY(-8px);
+}
+
+/* Numbers */
+.stat-card h3 {
+  font-size: 32px;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+/* Labels */
+.stat-card p {
+  margin: 0;
+  font-size: 16px;
+  color: #555;
+}
+
+/* Color-coded numbers */
+.stat-blue h3 {
+  color: #007bff; /* Blue */
+}
+.stat-green h3 {
+  color: #28a745; /* Green */
+}
+.stat-red h3 {
+  color: #dc3545; /* Red */
+}
+.stat-yellow h3 {
+  color: #ffc107; /* Yellow */
+}
+
+.recruiters {
+      padding: 50px 20px;
+      text-align: center;
+      background: #fff;
+    }
+
+    .recruiters h2 {
+      font-size: 28px;
+      margin-bottom: 30px;
+      color: #f58822;
+    }
+
+    /* Carousel Container */
+    .logo-slider {
+      overflow: hidden;
+      position: relative;
+      width: 100%;
+    }
+
+    /* Logos Track */
+    .logo-track {
+      display: flex;
+      width: calc(200px * 10); /* Adjust width depending on logo count */
+      animation: scroll 15s linear infinite;
+    }
+
+    .logo-track img {
+      width: 180px;
+      margin: 0 20px;
+      object-fit: contain;
+      filter: grayscale(100%);
+      transition: filter 0.3s;
+    }
+
+    .logo-track img:hover {
+      filter: grayscale(0%);
+    }
+
+    /* Animation */
+    @keyframes scroll {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); } /* Half of track because of duplicates */
+    }
+
+/* footer*/
+    .footer {
+  background: #222;
+  color: #ddd;
+  font-family: Arial, sans-serif;
+  padding: 5px 0;   /* instead of something like 20px */
+  margin: 0;        /* ensure no outer margin */
+  
+  font-size: 14px;       
+  
+}
+
+.footer-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* Footer sections */
+.footer-section h3 {
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-section ul li {
+  margin: 8px 0;
+}
+
+.footer-section ul li a {
+  color: #ddd;
+  text-decoration: none;
+}
+
+.footer-section ul li a:hover {
+  color: #ffc107;
+}
+
+/* Social Media Icons */
+.social-links a img {
+  width: 28px;
+  margin-right: 10px;
+  filter: brightness(0) invert(1);
+  transition: 0.3s;
+}
+.social-links a img:hover {
+  filter: none;
+}
+
+/* Side-by-side maps */
+.footer-maps {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  grid-column: 1 / -1; /* span full width in grid */
+}
+
+.footer-maps .footer-section {
+  background: #1b1b1b;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+/* Footer Bottom */
+.footer-bottom {
+  text-align: center;
+  margin-top: 10px;
+  border-top: 1px solid #444;
+  padding: 8px 0;
+  font-size: 14px;
+  color: #aaa;
+  grid-column: 1 / -1;
+}
+
+/* Responsive: stack maps on small screens */
+@media (max-width: 768px) {
+  .footer-maps {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+
+
+
+
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+  <div class="logo">
+    <img src="logo-Photoroom.png" alt="CCOEW Logo">
+    <span>Placement Cell, CCOEW Nagpur</span>
+  </div>
+  <nav>
+    <a href="home.html">Overview</a>
+    <a href="about us.html">About us</a>
+    <a href="PLACEMENT RECORD.html">Placement records</a>
+    <a href="Training Initiatives.html">Training Events</a>
+    <a href="contact.html">Contact Us</a>
+  </nav>
+</header>
+
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="overlay"></div>
+    <div class="hero-content">
+      <h1>A one stop portal for Placements</h1>
+      <p>
+        Welcome to the Placement and Training website For CCOEW Nagpur.  
+        Our graduates are a combination of rigorous thinking, hardwork and fundamental stronghold.  
+        They are nurtured by the institute to strive for excellence and deliver impact in their field of work.  
+        
+      </p>
+    </div>
+
+    <!-- Buttons -->
+    <div class="buttons">
+     <a href="signup.html" target="_blank">👤 Student</a>
+     <a href="signup.html" target="_blank">👤 Admin</a>
+    
+    </div>
+  </section>
+  <section class="quick-stats">
+  <h2>Placement Highlights</h2>
+  <div class="stats-container">
+
+    <div class="stat-card stat-blue">
+      <h3>70+</h3>
+      <p>Students Placed</p>
+    </div>
+
+    <div class="stat-card stat-green">
+      <h3>15+</h3>
+      <p>Recruiters</p>
+    </div>
+
+    <div class="stat-card stat-red">
+      <h3>10.77 LPA</h3>
+      <p>Highest Package</p>
+    </div>
+
+    <div class="stat-card stat-yellow">
+      <h3>4.89 LPA</h3>
+      <p>Average Package</p>
+    </div>
+
+  </div>
+</section>
+<section class="recruiters">
+    <h2>Our Recruiters</h2>
+    <div class="logo-slider">
+      <div class="logo-track">
+        <!-- Replace these logos with your recruiter images -->
+        <img src="microsoft.png" alt="Microsoft">
+        <img src="ericsson.png" alt="Ericsson">
+        <img src="faurecia.png" alt="Faurecia">
+        <img src="grindwell norton ltd.png" alt="Grindwell Norton LTD.">
+        <img src="honeywell.png" alt="Honeywell">
+        <img src="ibm.png" alt="IBM">
+        <img src="icertis.png" alt="Icertis">
+        <img src="infogen labs.png" alt="Infogen Labs">
+        <img src="kennametal.png" alt="Kennametal">
+        <img src="kohler.png" alt="Kohler.">
+        <img src="mahle behr.png" alt="MAHLE BEHR">
+        <img src="morris garages.png" alt="Morris Garages">
+        <img src="musigma.png" alt="Mu sigma">
+        <img src="optum.png" alt="OPTUM">
+        <img src="pepsico.png" alt="PepsiCo">
+        <img src="providence.png" alt="Providence">
+        <img src="rane.png" alt="RANE">
+        <img src="rotex.png" alt="ROTEX">
+        <img src="wipro.png" alt="Wipro">
+        <img src="atlas-copco-708.svg" alt="Atlas CopCo">
+        <img src="barclays.png" alt="Barclays">
+        <img src="bd.png" alt="BD">
+        <img src="ceat.png" alt="CEAT">
+        <img src="citi.png" alt="Citi">
+        <!-- Duplicate logos for infinite loop -->
+        <img src="microsoft.png" alt="Microsoft">
+        <img src="ericsson.png" alt="Ericsson">
+        <img src="faurecia.png" alt="Faurecia">
+        <img src="grindwell norton ltd.png" alt="Grindwell Norton LTD.">
+        <img src="honeywell.png" alt="Honeywell">
+        <img src="ibm.png" alt="IBM">
+        <img src="icertis.png" alt="Icertis">
+        <img src="infogen labs.png" alt="Infogen Labs">
+        <img src="kennametal.png" alt="Kennametal">
+        <img src="kohler.png" alt="Kohler.">
+        <img src="mahle behr.png" alt="MAHLE BEHR">
+        <img src="morris garages.png" alt="Morris Garages">
+        <img src="musigma.png" alt="Mu sigma">
+        <img src="optum.png" alt="OPTUM">
+        <img src="pepsico.png" alt="PepsiCo">
+        <img src="providence.png" alt="Providence">
+        <img src="rane.png" alt="RANE">
+        <img src="rotex.png" alt="ROTEX">
+        <img src="wipro.png" alt="Wipro">
+        <img src="atlas-copco-708.svg" alt="Atlas CopCo">
+        <img src="barclays.png" alt="Barclays">
+        <img src="bd.png" alt="BD">
+        <img src="ceat.png" alt="CEAT">
+        <img src="citi.png" alt="Citi">
+      </div>
+    </div>
+  </section>
+  <footer class="footer">
+  <div class="footer-container">
+
+    <!-- Quick Links -->
+    <div class="footer-section">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="about us.html">About Us</a></li>
+        <li><a href="PLACEMENT RECORD.html">Placement Records</a></li>
+        <li><a href="Training Initiatives.html">Training Initiatives</a></li>
+        <li><a href="eventcalender.html">Events Calendar</a></li>
+        
+      </ul>
+    </div>
+
+    <!-- Contact Info -->
+    <div class="footer-section">
+      <h3>Contact Us</h3>
+      <p>Training & Placement Cell</p>
+      <p>Email: <a href="mailto:office@cumminscollege.edu.in">office@cumminscollege.edu.in</a></p>
+      <p>Phone: +91 9420410225</p>
+      <p>Office Hours: 9 AM – 5 PM</p>
+    </div>
+
+    <!-- Social Media -->
+    <div class="footer-section">
+      <h3>Follow Us</h3>
+      <div class="social-links">
+        <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384014.png" alt="Facebook"></a>
+        <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384017.png" alt="Twitter"></a>
+        <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384015.png" alt="Instagram"></a>
+        <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384012.png" alt="LinkedIn"></a>
+      </div>
+    </div>
+
+    <!-- Address + Map -->
+     <div class="footer-maps">
+    <div class="footer-section">
+      <h3>Institute Location</h3>
+      <p>Cummins College of Engineering for Women,<br>Mouje Sukli (Gupchup), Hingna,<br> Nagpur, Maharashtra - 441110,</p>
+      <iframe 
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3723.1432532914478!2d78.97666787750838!3d21.06693993644762!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bd495a9dc651331%3A0x3416f35218f1e3e2!2sCummins%20College%20Of%20Engineering%20For%20Women%2C%20Nagpur!5e0!3m2!1sen!2sin!4v1755624821888!5m2!1sen!2sin" 
+        width="100%" 
+        height="150" 
+        style="border:0; border-radius:8px;" 
+        allowfullscreen="" 
+        loading="lazy">
+      </iframe>
+      </div>
+    <div class="footer-section">
+      <h3>City Office</h3>
+      <p>Maharshi Karve Stree Shikshan Samstha's Nargundkar Shaikshanik Prakalp,<br> Khamla Road, Deonagar,<br> Nagpur, Maharashtra - 440015</p>
+      <iframe 
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d59549.852105600396!2d78.99113803243178!3d21.11791754019956!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bd4bf7e8ccee71d%3A0x1e1715162d921e28!2sMaharshi%20Karve%20Stree%20Shikshan%20Sanstha%2C%20Cummins%20College%20for%20Women%2C%20city%20office!5e0!3m2!1sen!2sin!4v1755624562818!5m2!1sen!2sin" 
+        width="100%" 
+        height="150" 
+        style="border:0; border-radius:8px;" 
+        allowfullscreen="" 
+        loading="lazy">
+      </iframe>
+
+  </div>
+</div>
+</div>
+  <div class="footer-bottom">
+    <p>&copy; 2025 Cummins College of Engineering for Women | Training & Placement Cell</p>
+  </div>
+</footer>
+
+</body>
+</html>
+
+
+

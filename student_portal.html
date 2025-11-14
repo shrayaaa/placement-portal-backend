@@ -1,0 +1,965 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Placement Portal</title>
+  <style>
+    :root{
+      --bg:#0f172a; --card:#111827; --muted:#c9c8c6; --ink:#e5e7eb; --brand:#f97316; --brand-2:#fb923c;
+      --ok:#22c55e; --bd:#1f2937;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0; font:15px/1.5 system-ui,Segoe UI,Roboto,Arial; color:var(--ink); background:linear-gradient(180deg,#0b1023,#0f172a)}
+
+    /* Header */
+    header{
+      position:sticky; top:0; z-index:50;
+      display:flex; align-items:center; gap:14px;
+      padding:12px 18px; background:#0b1023; border-bottom:1px solid var(--bd);
+    }
+    .brand{display:flex; align-items:center; gap:10px; font-weight:700}
+    .brand-badge{width:34px; height:34px; display:grid; place-items:center; border-radius:8px;
+      background:linear-gradient(135deg,var(--brand),var(--brand-2)); font-weight:900}
+    .grow{flex:1}
+    .search{max-width:420px; width:100%; position:relative}
+    .search input{width:100%; padding:10px 12px 10px 36px; border-radius:10px; border:1px solid var(--bd); background:#0b1023; color:var(--ink)}
+    .search svg{position:absolute; left:10px; top:50%; transform:translateY(-50%); opacity:.7}
+
+    /* Layout */
+    .wrap{display:grid; grid-template-columns:260px 1fr; gap:18px; max-width:1200px; margin:18px auto; padding:0 16px}
+    @media (max-width:900px){ .wrap{grid-template-columns:1fr} nav{order:2} main{order:1} }
+
+    /* Sidebar */
+    nav{background:rgba(17,24,39,.75); border:1px solid var(--bd); border-radius:16px; padding:10px}
+    .nav-title{padding:10px 12px; color:var(--muted); font-size:12px; text-transform:uppercase; letter-spacing:.08em}
+    .nav-item{display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:10px; cursor:pointer; color:#cbd5e1}
+    .nav-item:hover{background:#0b1023}
+    .nav-item.active{background:linear-gradient(135deg,rgba(249,115,22,.25),rgba(251,146,60,.15)); border:1px solid rgba(249,115,22,.35)}
+    .nav-item svg{opacity:.9}
+
+    /* Content cards */
+    main{display:grid; gap:18px}
+    .card{background:rgba(17,24,39,.75); border:1px solid var(--bd); border-radius:18px; overflow:hidden}
+    .card h2{margin:0; padding:14px 16px; border-bottom:1px solid var(--bd); font-size:16px; background:#0d1326}
+    .card .content{padding:16px}
+    .grid-2{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px}
+    @media (max-width:680px){ .grid-2{grid-template-columns:1fr} }
+    .tile{border:1px dashed #334155; border-radius:12px; padding:12px; background:rgba(2,6,23,.5)}
+    .tile h4{margin:0 0 6px 0; font-size:14px}
+    .muted{color:var(--muted); font-size:13px}
+
+    /* Buttons */
+    .btn{display:inline-flex; align-items:center; gap:8px; padding:10px 12px; border-radius:10px; border:1px solid var(--bd); background:#0b1023; color:var(--ink); cursor:pointer}
+    .btn.primary{border-color:rgba(249,115,22,.5); background:linear-gradient(135deg,rgba(249,115,22,.2),rgba(251,146,60,.15))}
+    a.link{color:#93c5fd; text-decoration:none}
+    a.link:hover{text-decoration:underline}
+
+    /* Panels */
+    .panel{display:none}
+    .panel.active{display:block}
+
+    /* Chips */
+    .chip{display:inline-flex; align-items:center; gap:6px; font-size:12px; padding:6px 10px; border-radius:999px; border:1px solid var(--bd); background:#0b1023}
+    .ok{color:#86efac}
+    .list{margin:0; padding-left:18px}
+    .list li{margin:.25rem 0}
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="brand">
+      <div class="brand-badge">PP</div>
+      <div>Student Placement Portal</div>
+    </div>
+    <div class="grow"></div>
+    <div class="search">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M21 21l-4.3-4.3M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" stroke="#94a3b8" stroke-width="2" stroke-linecap="round"/></svg>
+      <input id="search" placeholder="Search (e.g., jobs, resume, training)" />
+    </div>
+    <button class="btn" id="profileBtn" title="Profile">Profile</button>
+  </header>
+
+  <div class="wrap">
+   
+    <nav>
+      <div class="nav-title"> Placement Sections</div>
+      <div class="nav-item active" data-panel="profile">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="7" r="4" stroke="#fb923c" stroke-width="2"/><path d="M5 21c0-4 3-7 7-7s7 3 7 7" stroke="#fb923c" stroke-width="2"/></svg>
+         Placement Profile
+      </div>
+      <div class="nav-item" data-panel="jobs">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <path d="M4 4h16v16H4z" stroke="#fb923c" stroke-width="2"/>
+          <path d="M8 8h8M8 12h5M8 16h6" stroke="#fb923c" stroke-width="2"/>
+        </svg>
+        Job Listings
+      </div>
+      
+      <div class="nav-item" data-panel="eligibility">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 3l9 4-9 4-9-4 9-4Z M3 7v10l9 4 9-4V7" stroke="#fb923c" stroke-width="2"/></svg>
+        Eligibility & Criteria
+      </div>
+      <div class="nav-item" data-panel="applications">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="#fb923c" stroke-width="2"/><path d="M8 12h8M8 8h8M8 16h5" stroke="#fb923c" stroke-width="2"/></svg>
+        Applications & Status
+      </div>
+      
+      <div class="nav-item" data-panel="announcements">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="#fb923c" stroke-width="2"/></svg>
+        Announcements
+      </div>
+      
+    </nav>
+
+    <!-- Content -->
+    <main>
+      <!-- Placement Profile -->
+      <section class="panel active" id="profile">
+  <div class="card">
+    <h2>Placement Profile</h2>
+    <div class="content">
+      <form id="profileForm">
+        <div class="grid-2">
+          <div class="tile">
+            <h4>Personal</h4>
+            <label class="muted">Roll Number</label>
+            <input id="profileRoll" readonly style="width:100%; padding:8px; border-radius:8px; border:1px solid #333; background:#081022; color:var(--ink)">
+
+            <label class="muted">Name</label>
+            <input id="profileName" required style="width:100%; padding:8px; border-radius:8px; margin-bottom:8px">
+
+            <label class="muted">Email</label>
+            <input id="profileEmail" readonly style="width:100%; padding:8px; border-radius:8px; background:#081022;color:var(--ink)">
+
+            <label class="muted">Department</label>
+            <input id="profileDept" style="width:100%; padding:8px; border-radius:8px;">
+          </div>
+
+          <div class="tile">
+            <h4>Academic & Documents</h4>
+            <label class="muted">CGPA</label>
+            <input id="profileCgpa" type="number" step="0.01" min="0" max="10" style="width:100%; padding:8px; border-radius:8px;">
+
+            <label class="muted">Phone</label>
+            <input id="profilePhone" style="width:100%; padding:8px; border-radius:8px;">
+
+            <label class="muted">Skills (comma separated)</label>
+            <input id="profileSkills" style="width:100%; padding:8px; border-radius:8px;">
+
+            <label class="muted">Resume</label>
+            <input id="resumeFile" type="file" accept=".pdf,.doc,.docx" style="width:100%; padding:8px;">
+            <div style="margin-top:8px">
+              <a id="resumeLink" class="link" href="#" target="_blank" style="display:none">View uploaded resume</a>
+            </div>
+
+            <div style="margin-top:12px">
+              <button type="submit" class="btn primary">Save Profile</button>
+            </div>
+            <div id="profileMsg" style="margin-top:8px"></div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+
+      <!-- Eligibility -->
+      <section class="panel" id="eligibility">
+        <div class="card">
+          <h2>Eligibility & Criteria</h2>
+          <div class="content grid-2">
+            <div class="tile">
+              <h4>CGPA / Backlog status</h4>
+              <p class="muted">Check if you meet eligibility for drives.</p>
+              <span class="chip"><span class="ok">●</span> Eligible</span>
+            </div>
+            <div class="tile">
+              <h4>Company criteria</h4>
+              <ul class="list">
+                <li>Cut-off CGPA</li>
+                <li>No active backlogs</li>
+              </ul>
+              <button class="btn" id="viewCompaniesBtn">View Companies</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Applications -->
+      <section class="panel" id="applications">
+        <div class="card">
+          <h2>Applications & Status</h2>
+          <div class="content">
+            <p class="muted">Track your job applications and their current status.</p>
+            <div id="appliedCompanies">
+              <p class="muted">Loading applications...</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      
+      <!-- Announcements -->
+      <section class="panel" id="announcements">
+        <div class="card">
+          <h2>Announcements</h2>
+          <div class="content">
+            <p class="muted">Important announcements from the placement office.</p>
+            <div id="studentAnnouncements">
+              <p>Loading announcements...</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Drives -->
+      <section class="panel" id="drives">
+        <div class="card">
+          <h2>Job Drives</h2>
+          <div class="content">
+            <div id="drivesContent">
+              <p>Loading drives...</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Job Listings -->
+<section class="panel" id="jobs">
+  <div class="card">
+    <h2>Available Job Listings</h2>
+    <div class="content" id="jobListings">
+      <p>Loading jobs...</p>
+    </div>
+  </div>
+</section>
+
+<!-- Company Eligibility Checker -->
+<section class="panel" id="companyChecker" style="display:none;">
+  <div class="card">
+    <h2>Company Eligibility Checker</h2>
+    <div class="content">
+      <div style="margin-bottom:20px;">
+        <button class="btn" onclick="showJobListings()">← Back to Job Listings</button>
+      </div>
+      
+      <div class="grid-2">
+        <div class="tile">
+          <h4>Your Profile</h4>
+          <div id="studentEligibilityProfile">
+            <p><strong>CGPA:</strong> <span id="studentCgpa">-</span></p>
+            <p><strong>Department:</strong> <span id="studentDept">-</span></p>
+            <p><strong>Skills:</strong> <span id="studentSkills">-</span></p>
+          </div>
+        </div>
+        
+        <div class="tile">
+          <h4>Select Company to Check</h4>
+          <div id="companySelector">
+            <p>Loading companies...</p>
+          </div>
+        </div>
+      </div>
+      
+      <div id="eligibilityResult" style="margin-top:20px; display:none;">
+        <div class="card">
+          <h2>Eligibility Result</h2>
+          <div class="content" id="eligibilityContent">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+     </main>
+   </div>
+
+  <script>
+    // Sidebar nav
+    const navItems = document.querySelectorAll('.nav-item');
+    const panels = document.querySelectorAll('.panel');
+    navItems.forEach(item=>{
+      item.addEventListener('click', ()=>{
+        navItems.forEach(n=>n.classList.remove('active'));
+        item.classList.add('active');
+        const id = item.dataset.panel;
+        panels.forEach(p=>p.classList.toggle('active', p.id === id));
+        document.getElementById('search').value = '';
+        
+        // Hide eligibility checker when switching panels
+        const eligibilityChecker = document.getElementById('companyChecker');
+        if (eligibilityChecker && id !== 'companyChecker') {
+          eligibilityChecker.style.display = 'none';
+          eligibilityChecker.classList.remove('active');
+        }
+      });
+    });
+
+    // Search filter
+    const search = document.getElementById('search');
+    search.addEventListener('input', ()=>{
+      const q = search.value.trim().toLowerCase();
+      const activePanel = document.querySelector('.panel.active');
+      const tiles = activePanel.querySelectorAll('.tile');
+      tiles.forEach(t=>{
+        const text = t.innerText.toLowerCase();
+        t.style.display = text.includes(q) ? '' : 'none';
+      });
+    });
+
+    // Profile shortcut
+    document.getElementById('profileBtn').addEventListener('click', ()=>{
+      document.querySelector('.nav-item[data-panel="profile"]').click();
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+  const roll = localStorage.getItem("studentRoll");
+
+  if (roll) {
+    const rollField = document.getElementById("profileRoll");
+    if (rollField) rollField.value = roll;
+  }
+  
+  // Email will be set by loadProfile() from server data
+});
+
+
+
+// ---------- PROFILE: load & save ----------
+async function loadProfile() {
+  const roll = localStorage.getItem('studentRoll');
+  console.log("Retrieved roll from localStorage:", roll); // Debug log
+  console.log("All localStorage:", localStorage); // Debug log
+  if (!roll) {
+    document.getElementById('profileMsg').innerText = 'Please login first.';
+    return;
+  }
+  document.getElementById('profileRoll').value = roll;
+
+  try {
+    const res = await fetch(`http://localhost:5000/api/student/${roll}`);
+    if (!res.ok) {
+      console.log('Profile fetch failed with status:', res.status);
+      document.getElementById('profileMsg').innerText = 'Profile not found. You can create one.';
+      return;
+    }
+    const data = await res.json();
+    console.log('Profile data received:', data); // Debug log
+    console.log('Resume URL in data:', data.resume_url); // Specific resume URL debug
+    document.getElementById('profileName').value = data.name || '';
+    document.getElementById('profileEmail').value = data.email || '';
+    document.getElementById('profileDept').value = data.department || '';
+    document.getElementById('profileCgpa').value = data.cgpa || '';
+    document.getElementById('profilePhone').value = data.phone || '';
+    document.getElementById('profileSkills').value = data.skills || '';
+    console.log('Email field set to:', data.email); // Debug log
+    // Always reset resume link first
+    const link = document.getElementById('resumeLink');
+    link.style.display = 'none';
+    link.href = '#';
+    link.innerText = '';
+    
+    if (data.resume_url && data.resume_url.trim() !== '') {
+      console.log('Setting resume link to:', data.resume_url); // Debug log
+      link.href = data.resume_url;
+      link.style.display = 'inline';
+      link.innerText = 'View uploaded resume';
+    } else {
+      console.log('No resume URL found in profile data'); // Debug log
+    }
+  } catch (err) {
+    console.error('Load profile error', err);
+  }
+}
+
+// Save profile (PUT)
+document.getElementById('profileForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const roll = localStorage.getItem('studentRoll');
+  if (!roll) return alert('Login required');
+
+  const payload = {
+    name: document.getElementById('profileName').value.trim(),
+    phone: document.getElementById('profilePhone').value.trim(),
+    department: document.getElementById('profileDept').value.trim(),
+    cgpa: document.getElementById('profileCgpa').value || null,
+    skills: document.getElementById('profileSkills').value.trim() || null,
+  };
+
+  console.log('Sending profile data:', { roll, payload }); // Debug log
+
+  try {
+    const r = await fetch(`http://localhost:5000/api/student/${roll}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const data = await r.json();
+    console.log('Profile save response:', { status: r.status, data }); // Debug log
+    const msg = document.getElementById('profileMsg');
+    if (r.ok) {
+      msg.style.color = 'lightgreen';
+      msg.innerText = data.message;
+    } else {
+      msg.style.color = 'salmon';
+      msg.innerText = data.message || 'Save failed';
+    }
+  } catch (err) {
+    console.error('Save profile error', err);
+    document.getElementById('profileMsg').innerText = 'Server error';
+  }
+});
+
+// Resume upload
+document.getElementById('resumeFile').addEventListener('change', async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const roll = localStorage.getItem('studentRoll');
+  if (!roll) return alert('Login required');
+
+  const fd = new FormData();
+  fd.append('resume', file);
+
+  try {
+    const r = await fetch(`http://localhost:5000/api/student/${roll}/resume`, {
+      method: 'POST',
+      body: fd
+    });
+    const data = await r.json();
+    const msg = document.getElementById('profileMsg');
+    if (r.ok) {
+      msg.style.color = 'lightgreen';
+      msg.innerText = data.message;
+      const link = document.getElementById('resumeLink');
+      console.log('Upload successful, resume URL:', data.resume_url); // Debug log
+      link.href = data.resume_url;
+      link.style.display = 'inline';
+      link.innerText = 'View uploaded resume';
+    } else {
+      msg.style.color = 'salmon';
+      msg.innerText = data.message || 'Upload failed';
+    }
+  } catch (err) {
+    console.error('Resume upload error', err);
+    document.getElementById('profileMsg').innerText = 'Upload error';
+  }
+});
+
+// load profile when profile panel shown or on page load
+document.addEventListener('DOMContentLoaded', loadProfile);
+document.querySelector('.nav-item[data-panel="profile"]').addEventListener('click', loadProfile);
+
+async function loadJobs() {
+  const container = document.getElementById("jobListings");
+  container.innerHTML = "<p>Loading jobs...</p>";
+
+  try {
+    const roll = localStorage.getItem('studentRoll');
+    if (!roll) {
+      container.innerHTML = "<p>Please login first to view jobs.</p>";
+      return;
+    }
+
+    console.log("Loading jobs for student:", roll); // Debug log
+
+    // Get student profile and jobs in parallel
+    const [studentResponse, jobsResponse] = await Promise.all([
+      fetch(`http://localhost:5000/api/student/${roll}`),
+      fetch("http://localhost:5000/api/jobs")
+    ]);
+
+    console.log("Student response status:", studentResponse.status); // Debug log
+    console.log("Jobs response status:", jobsResponse.status); // Debug log
+
+    if (!studentResponse.ok) {
+      throw new Error(`Student API error: ${studentResponse.status}`);
+    }
+    if (!jobsResponse.ok) {
+      throw new Error(`Jobs API error: ${jobsResponse.status}`);
+    }
+
+    const student = await studentResponse.json();
+    const jobs = await jobsResponse.json();
+
+    console.log("Student data:", student); // Debug log
+    console.log("Jobs data:", jobs); // Debug log
+
+    if (jobs.length === 0) {
+      container.innerHTML = "<p>No job listings available right now.</p>";
+      return;
+    }
+
+    const studentCgpa = parseFloat(student.cgpa) || 0;
+    container.innerHTML = ""; // Clear loading message
+
+    jobs.forEach(job => {
+      const jobCard = document.createElement("div");
+      jobCard.classList.add("tile");
+      
+      // Parse CGPA requirement from eligibility criteria
+      const eligibilityText = job.eligibility || '';
+      const cgpaMatch = eligibilityText.match(/(\d+(?:\.\d+)?)\s*(?:cgpa|CGPA|gpa|GPA)/i);
+      const requiredCgpa = cgpaMatch ? parseFloat(cgpaMatch[1]) : 0;
+      const isEligible = requiredCgpa === 0 || studentCgpa >= requiredCgpa;
+
+      jobCard.innerHTML = `
+        <h4>${job.company_name || job.company} - ${job.role || job.title}</h4>
+        <p><strong>CTC:</strong> ${job.ctc || job.salary || "Not specified"}</p>
+        <p><strong>Eligibility:</strong> ${job.eligibility || "Not specified"}</p>
+        <p><strong>Deadline:</strong> ${job.deadline || "Not specified"}</p>
+        <p>${job.description || ""}</p>
+        ${isEligible ? 
+          `<button class="btn primary apply-btn" data-job-id="${job.id}">Apply</button>` :
+          `<div style="margin-top:12px;">
+            <p style="color:#ef4444; font-weight:bold;">⚠️ Not Eligible</p>
+            <p class="muted">Required CGPA: ${requiredCgpa}, Your CGPA: ${studentCgpa}</p>
+            <button class="btn" disabled style="opacity:0.5; cursor:not-allowed;">Cannot Apply</button>
+          </div>`
+        }
+      `;
+      container.appendChild(jobCard);
+    });
+  } catch (err) {
+    console.error("Error fetching jobs:", err);
+    container.innerHTML = `<p style='color:salmon'>Error loading jobs: ${err.message}</p>`;
+  }
+}
+
+// Load jobs when the Jobs panel is clicked
+document.querySelector('.nav-item[data-panel="jobs"]')
+  .addEventListener('click', loadJobs);
+
+// Load applications when the Applications panel is clicked
+document.querySelector('.nav-item[data-panel="applications"]')
+  .addEventListener('click', loadApplications);
+
+// View Companies functionality
+document.getElementById('viewCompaniesBtn').addEventListener('click', showCompanyChecker);
+
+// Add event listener for company tiles and apply buttons
+document.addEventListener('click', function(e) {
+  if (e.target.closest('.company-tile')) {
+    const jobId = parseInt(e.target.closest('.company-tile').getAttribute('data-job-id'));
+    checkEligibility(jobId);
+  }
+  
+  if (e.target.classList.contains('apply-btn')) {
+    const jobId = parseInt(e.target.getAttribute('data-job-id'));
+    applyForJob(jobId);
+  }
+});
+
+function showCompanyChecker() {
+  // Hide all panels
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  
+  // Show company checker panel
+  document.getElementById('companyChecker').style.display = 'block';
+  document.getElementById('companyChecker').classList.add('active');
+  
+  // Load student profile data
+  loadStudentEligibilityProfile();
+  
+  // Load companies
+  loadCompaniesForChecker();
+}
+
+function showJobListings() {
+  // Hide company checker
+  document.getElementById('companyChecker').style.display = 'none';
+  document.getElementById('companyChecker').classList.remove('active');
+  
+  // Show jobs panel
+  document.querySelector('.nav-item[data-panel="jobs"]').click();
+}
+
+async function loadStudentEligibilityProfile() {
+  const roll = localStorage.getItem('studentRoll');
+  if (!roll) {
+    document.getElementById('studentCgpa').innerText = 'Please login first';
+    return;
+  }
+
+  try {
+    const res = await fetch(`http://localhost:5000/api/student/${roll}`);
+    if (res.ok) {
+      const data = await res.json();
+      document.getElementById('studentCgpa').innerText = data.cgpa || 'Not set';
+      document.getElementById('studentDept').innerText = data.department || 'Not set';
+      document.getElementById('studentSkills').innerText = data.skills || 'Not set';
+    }
+  } catch (err) {
+    console.error('Error loading student profile:', err);
+  }
+}
+
+async function loadCompaniesForChecker() {
+  const container = document.getElementById('companySelector');
+  container.innerHTML = '<p>Loading companies...</p>';
+
+  try {
+    const res = await fetch('http://localhost:5000/api/jobs');
+    const jobs = await res.json();
+
+    if (jobs.length === 0) {
+      container.innerHTML = '<p>No companies available right now.</p>';
+      return;
+    }
+
+    container.innerHTML = jobs.map(job => `
+      <div class="tile company-tile" style="margin-bottom:10px; cursor:pointer;" data-job-id="${job.id}">
+        <h4>${job.company_name || job.company}</h4>
+        <p class="muted">${job.role || job.title}</p>
+        <p class="muted">CTC: ${job.ctc || job.salary || 'Not specified'}</p>
+        <button class="btn primary" style="margin-top:8px;">Check Eligibility</button>
+      </div>
+    `).join('');
+  } catch (err) {
+    console.error('Error loading companies:', err);
+    container.innerHTML = '<p style="color:salmon">Error loading companies</p>';
+  }
+}
+
+async function checkEligibility(jobId) {
+  const roll = localStorage.getItem('studentRoll');
+  if (!roll) {
+    alert('Please login first');
+    return;
+  }
+
+  try {
+    // Get student profile
+    const studentRes = await fetch(`http://localhost:5000/api/student/${roll}`);
+    const studentData = await studentRes.json();
+
+    // Get job details
+    const jobsRes = await fetch('http://localhost:5000/api/jobs');
+    const jobs = await jobsRes.json();
+    const job = jobs.find(j => j.id === jobId);
+
+    if (!job) {
+      alert('Job not found');
+      return;
+    }
+
+    // Show eligibility result
+    const resultDiv = document.getElementById('eligibilityResult');
+    const contentDiv = document.getElementById('eligibilityContent');
+    
+    resultDiv.style.display = 'block';
+    
+    // Parse eligibility criteria (basic implementation)
+    const studentCgpa = parseFloat(studentData.cgpa) || 0;
+    const eligibility = job.eligibility || '';
+    
+    // Extract CGPA requirement from eligibility text
+    const cgpaMatch = eligibility.match(/(\d+\.?\d*)\s*cgpa/i) || eligibility.match(/cgpa\s*[>>=]\s*(\d+\.?\d*)/i);
+    const requiredCgpa = cgpaMatch ? parseFloat(cgpaMatch[1]) : 0;
+    
+    const isEligible = studentCgpa >= requiredCgpa;
+    
+    contentDiv.innerHTML = `
+      <div class="grid-2">
+        <div class="tile">
+          <h4>${job.company_name || job.company} - ${job.role || job.title}</h4>
+          <p><strong>Required CGPA:</strong> ${requiredCgpa || 'Not specified'}</p>
+          <p><strong>Full Criteria:</strong> ${job.eligibility || 'Not specified'}</p>
+          <p><strong>Deadline:</strong> ${job.deadline || 'Not specified'}</p>
+        </div>
+        
+        <div class="tile">
+          <h4>Your Profile</h4>
+          <p><strong>Your CGPA:</strong> ${studentCgpa || 'Not set'}</p>
+          <p><strong>Department:</strong> ${studentData.department || 'Not set'}</p>
+          <p><strong>Skills:</strong> ${studentData.skills || 'Not set'}</p>
+        </div>
+      </div>
+      
+      <div class="tile" style="margin-top:16px; text-align:center;">
+        <h4>Eligibility Status</h4>
+        ${isEligible ? 
+          '<p style="color:#22c55e; font-size:18px; font-weight:bold;">✓ You are ELIGIBLE for this position!</p>' :
+          '<p style="color:#ef4444; font-size:18px; font-weight:bold;">✗ You do NOT meet the minimum requirements</p>'
+        }
+        ${!isEligible && requiredCgpa > 0 ? 
+          `<p class="muted">You need a CGPA of at least ${requiredCgpa} (you have ${studentCgpa})</p>` : ''
+        }
+        ${isEligible ? 
+          `<button class="btn primary apply-btn" data-job-id="${job.id}" style="margin-top:12px;">Apply for this Job</button>` : 
+          '<p class="muted">Improve your CGPA or skills to become eligible</p>'
+        }
+      </div>
+    `;
+  } catch (err) {
+    console.error('Error checking eligibility:', err);
+    alert('Error checking eligibility. Please try again.');
+  }
+}
+
+// Apply for job function with eligibility check
+async function applyForJob(jobId) {
+  const roll = localStorage.getItem('studentRoll');
+  if (!roll) {
+    alert('Please login first');
+    return;
+  }
+
+  // Check eligibility before applying
+  try {
+    const [studentResponse, jobResponse] = await Promise.all([
+      fetch(`http://localhost:5000/api/student/${roll}`),
+      fetch(`http://localhost:5000/api/jobs`)
+    ]);
+
+    const student = await studentResponse.json();
+    const jobs = await jobResponse.json();
+    const job = jobs.find(j => j.id === jobId);
+
+    if (!job) {
+      alert('Job not found');
+      return;
+    }
+
+    // Parse CGPA requirement from eligibility criteria
+    const eligibilityText = job.eligibility || '';
+    const cgpaMatch = eligibilityText.match(/(\d+(?:\.\d+)?)\s*(?:cgpa|CGPA|gpa|GPA)/i);
+    const requiredCgpa = cgpaMatch ? parseFloat(cgpaMatch[1]) : 0;
+    const studentCgpa = parseFloat(student.cgpa) || 0;
+
+    // Check eligibility
+    if (requiredCgpa > 0 && studentCgpa < requiredCgpa) {
+      alert(`You are not eligible for this position. Required CGPA: ${requiredCgpa}, Your CGPA: ${studentCgpa}`);
+      return;
+    }
+
+    if (!confirm('Are you sure you want to apply for this job?')) {
+      return;
+    }
+
+    const response = await fetch(`http://localhost:5000/api/student/${roll}/apply/${jobId}`, {
+      method: 'POST'
+    });
+
+    const result = await response.json();
+
+    if (response.ok) {
+      alert('Application submitted successfully!');
+      // Refresh applications if on applications panel
+      if (document.querySelector('.nav-item[data-panel="applications"]').classList.contains('active')) {
+        loadApplications();
+      }
+    } else {
+      alert(`Application failed: ${result.message}`);
+    }
+  } catch (err) {
+    console.error('Error applying for job:', err);
+    alert('Error submitting application. Please try again.');
+  }
+}
+
+// Load applications function
+async function loadApplications() {
+  const roll = localStorage.getItem('studentRoll');
+  if (!roll) {
+    document.getElementById('appliedCompanies').innerHTML = '<p>Please login first</p>';
+    return;
+  }
+
+  try {
+    const response = await fetch(`http://localhost:5000/api/student/${roll}/applications`);
+    const applications = await response.json();
+
+    const container = document.getElementById('appliedCompanies');
+    
+    if (applications.length === 0) {
+      container.innerHTML = '<p>No applications submitted yet.</p>';
+      return;
+    }
+
+    container.innerHTML = applications.map(app => `
+      <div class="tile">
+        <h4>${app.company_name} - ${app.role}</h4>
+        <p><strong>CTC:</strong> ${app.ctc || 'Not specified'}</p>
+        <p><strong>Applied on:</strong> ${new Date(app.applied_at).toLocaleDateString()}</p>
+        <p><strong>Status:</strong> 
+          <span class="chip ${getStatusColor(app.status)}" style="padding:4px 8px; border-radius:6px; font-size:12px; font-weight:bold;">
+            ${app.status.charAt(0).toUpperCase() + app.status.slice(1)}
+          </span>
+        </p>
+        <p><strong>Deadline:</strong> ${app.deadline || 'Not specified'}</p>
+        ${app.status === 'rejected' ? `
+          <div style="margin-top:12px;">
+            <p class="muted" style="color:#ef4444;">Your application was not successful this time.</p>
+            <p class="muted">You can reapply if you meet the eligibility criteria.</p>
+          </div>
+        ` : ''}
+        ${app.status === 'shortlisted' ? `
+          <div style="margin-top:12px;">
+            <p style="color:#22c55e; font-weight:bold;">🎉 Congratulations! You have been shortlisted.</p>
+            <p class="muted">Please wait for further instructions from the company.</p>
+          </div>
+        ` : ''}
+        ${app.status === 'selected' ? `
+          <div style="margin-top:12px;">
+            <p style="color:#3b82f6; font-weight:bold;">🎉 Congratulations! You have been selected.</p>
+            <p class="muted">Please check your email for offer details.</p>
+          </div>
+        ` : ''}
+      </div>
+    `).join('');
+  } catch (err) {
+    console.error('Error loading applications:', err);
+    document.getElementById('appliedCompanies').innerHTML = '<p style="color:salmon">Error loading applications</p>';
+  }
+}
+
+function getStatusColor(status) {
+  switch(status) {
+    case 'applied': return '';
+    case 'shortlisted': return 'ok';
+    case 'selected': return 'ok';
+    case 'rejected': return '';
+    default: return '';
+  }
+}
+
+// ==================== DRIVES FUNCTIONALITY ====================
+
+// Load drives for students
+async function loadDrives() {
+  const container = document.getElementById("drivesContent");
+  container.innerHTML = "<p>Loading drives...</p>";
+
+  try {
+    const response = await fetch("http://localhost:5000/api/drives");
+    const drives = await response.json();
+
+    if (drives.length === 0) {
+      container.innerHTML = "<p class='muted'>No drives scheduled at the moment.</p>";
+      return;
+    }
+
+    // Separate upcoming and past drives
+    const currentDate = new Date();
+    const upcomingDrives = drives.filter(drive => new Date(drive.drive_date) >= currentDate);
+    const pastDrives = drives.filter(drive => new Date(drive.drive_date) < currentDate);
+
+    let html = "";
+
+    // Upcoming Drives Section
+    if (upcomingDrives.length > 0) {
+      html += `
+        <div class="tile" style="margin-bottom:20px;">
+          <h4>🚀 Upcoming Drives</h4>
+          ${upcomingDrives.map(drive => `
+            <div style="border:1px solid #334155; border-radius:8px; padding:12px; margin-bottom:12px; background:rgba(34,197,94,.05);">
+              <h4 style="margin:0 0 8px 0; color:#22c55e;">${drive.company_name}</h4>
+              <p class="muted">📅 ${new Date(drive.drive_date).toLocaleDateString()} ${drive.drive_time ? `at ${drive.drive_time}` : ''}</p>
+              ${drive.venue ? `<p class="muted">📍 ${drive.venue}</p>` : ''}
+              ${drive.eligibility_criteria ? `<p class="muted">✅ Eligibility: ${drive.eligibility_criteria}</p>` : ''}
+              ${drive.registration_deadline ? `<p class="muted">⏰ Registration deadline: ${new Date(drive.registration_deadline).toLocaleDateString()}</p>` : ''}
+              ${drive.contact_info ? `<p class="muted">📞 Contact: ${drive.contact_info}</p>` : ''}
+              ${drive.description ? `<p>${drive.description}</p>` : ''}
+              ${drive.announcement ? `<div style="background:rgba(251,146,60,.1); padding:8px; border-radius:6px; margin-top:8px; border-left:3px solid #fb923c;"><strong>📢 Announcement:</strong> ${drive.announcement}</div>` : ''}
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    // Past Drives with Results Section
+    if (pastDrives.length > 0) {
+      html += `
+        <div class="tile">
+          <h4>📋 Past Drives & Results</h4>
+          ${pastDrives.map(drive => `
+            <div style="border:1px solid #334155; border-radius:8px; padding:12px; margin-bottom:12px; background:rgba(2,6,23,.3);">
+              <h4 style="margin:0 0 8px 0;">${drive.company_name}</h4>
+              <p class="muted">📅 Drive held on: ${new Date(drive.drive_date).toLocaleDateString()}</p>
+              ${drive.result_pdf ? 
+                `<div style="background:rgba(34,197,94,.1); padding:8px; border-radius:6px; margin-top:8px;">
+                  <p style="margin:0; color:#22c55e;"><strong>✅ Results Available!</strong></p>
+                  <a href="http://localhost:5000${drive.result_pdf}" target="_blank" class="btn primary" style="margin-top:8px; display:inline-flex; align-items:center; gap:6px;">
+                    📄 View Results PDF
+                  </a>
+                </div>` : 
+                `<p class="muted" style="font-style:italic;">Results pending...</p>`
+              }
+              ${drive.announcement ? `<div style="background:rgba(251,146,60,.1); padding:8px; border-radius:6px; margin-top:8px; border-left:3px solid #fb923c;"><strong>📢 Announcement:</strong> ${drive.announcement}</div>` : ''}
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    if (html === "") {
+      container.innerHTML = "<p class='muted'>No drives scheduled at the moment.</p>";
+    } else {
+      container.innerHTML = html;
+    }
+
+  } catch (err) {
+    console.error("Error loading drives:", err);
+    container.innerHTML = "<p style='color:salmon'>Error loading drives</p>";
+  }
+}
+
+// Load announcements when announcements panel is clicked
+document.querySelector('.nav-item[data-panel="announcements"]')
+  .addEventListener('click', loadStudentAnnouncements);
+
+// Load drives when drives panel is clicked
+document.querySelector('.nav-item[data-panel="drives"]')
+  .addEventListener('click', loadDrives);
+
+// Load student announcements
+async function loadStudentAnnouncements() {
+  const container = document.getElementById("studentAnnouncements");
+  container.innerHTML = "<p>Loading announcements...</p>";
+  
+  try {
+    const response = await fetch("http://localhost:5000/api/announcements");
+    const announcements = await response.json();
+    
+    container.innerHTML = "";
+    
+    if (announcements.length === 0) {
+      container.innerHTML = "<p class='muted'>No announcements available.</p>";
+      return;
+    }
+    
+    announcements.forEach(announcement => {
+      const priorityColor = announcement.priority === 'urgent' ? '#ef4444' : 
+                           announcement.priority === 'high' ? '#f59e0b' : '#6b7280';
+      
+      const announcementDiv = document.createElement("div");
+      announcementDiv.className = "tile";
+      announcementDiv.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:start; margin-bottom:8px;">
+          <h4 style="margin:0; color:var(--ink);">${announcement.title}</h4>
+          <span style="background:${priorityColor}; color:white; padding:2px 8px; border-radius:4px; font-size:12px; text-transform:uppercase;">
+            ${announcement.priority}
+          </span>
+        </div>
+        <p style="margin:8px 0; color:var(--muted);">${announcement.content}</p>
+        <div style="margin-top:12px;">
+          <small class="muted">Posted: ${new Date(announcement.created_at).toLocaleDateString()}</small>
+          ${announcement.expiry_date ? `<small class="muted" style="margin-left:16px;">Expires: ${new Date(announcement.expiry_date).toLocaleDateString()}</small>` : ''}
+        </div>
+      `;
+      container.appendChild(announcementDiv);
+    });
+  } catch (err) {
+    console.error("Error loading announcements:", err);
+    container.innerHTML = "<p style='color:#ef4444'>Error loading announcements</p>";
+  }
+}
+
+  </script>
+</body>
+</html>

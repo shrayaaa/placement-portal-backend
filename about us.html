@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>About | Training & Placement Cell</title>
+  <style>
+    :root {
+      --bg: #ffffff;           /* page background */
+      --card: #f8f8f8;         /* card background */
+      --muted: #555555;        /* muted text */
+      --text: #000000;         /* normal text */
+      --primary: #f58822;      /* buttons & highlights */
+      --ring: rgba(245, 136, 34, .35); /* shadow for buttons */
+      --accent:#f58822;       /* accents */
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans"; }
+
+    /* Header */
+    header {
+      background-color: var(--primary);
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      height: 70px;
+    }
+
+    header .logo {
+      display: flex;
+      align-items: center;
+      font-weight: bold;
+      font-size: 20px;
+      color: white;
+    }
+
+    header .logo img {
+      width: 90px;
+      height: 65px;
+      margin-right: 12px;
+    }
+
+    header nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: -30px;
+      font-size: 17px;
+      transition: color 0.3s;
+      margin-right: 60px;
+    }
+
+    header nav a:hover { color: #28345b; }
+
+    /* Containers full width */
+    .container {
+      width: 100%;
+      margin: 0;
+      padding: 120px 40px 40px 40px; /* top padding to avoid header overlap */
+    }
+
+    h1 { font-size: clamp(1.8rem, 2.6vw + 1rem, 3rem); line-height: 1.15; margin: 14px 0 16px; text-align: center; }
+    .lead { color: var(--muted); max-width: 65ch; text-align: center; margin: 0 auto 40px; }
+
+    .grid { display: grid; gap: 20px; width: 100%; }
+    @media (min-width: 880px) {
+      .grid-2 { grid-template-columns: 1fr 1fr; }
+      .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid rgba(0,0,0,.15);
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.1);
+      width: 100%;
+    }
+
+    .card h2, .card h3 { margin: 0 0 10px; font-size: 1.1rem; color: var(--text); }
+    .list { display: grid; gap: 10px; margin-top: 8px; padding-left: 0; }
+    .list li { list-style: none; padding-left: 36px; position: relative; color: var(--text); }
+    .list li svg { position: absolute; left: 0; top: 2px; stroke: var(--primary); }
+
+    .section-title { margin: 34px 0 14px; font-size: 1.35rem; color: var(--text); }
+
+    .stats { display:grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 14px; margin-top: 18px; }
+    .stat { text-align:center; padding: 18px; border:1px dashed rgba(0,0,0,.15); border-radius:14px; }
+    .stat .num { font-weight: 800; font-size: clamp(1.2rem, 2.3vw + .4rem, 2rem); color: var(--accent); }
+    .stat .label { color: var(--muted); font-size: .92rem; }
+
+    .po { display:flex; gap: 18px; align-items:flex-start; flex-wrap: wrap; }
+    .po img { width: 150px; height: 150px; border-radius: 14px; object-fit: cover; border:1px solid rgba(0,0,0,.15) }
+    .po blockquote { margin: 0; color: var(--text); }
+    .po cite { display:block; margin-top: 8px; color: var(--muted); font-style: normal; }
+
+    .team { display:grid; gap: 16px; width: 100%; }
+    .member { display:flex; gap: 14px; align-items:center; border:1px solid rgba(0,0,0,.15); padding: 12px; border-radius: 14px; background: #f4f4f4; width: 100%; flex-wrap: wrap; }
+    .member img { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); }
+
+    .kbd { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: .85em; background: rgba(0,0,0,.05); border:1px solid rgba(0,0,0,.1); padding: 2px 6px; border-radius: 6px; }
+
+    .accent-bar { height: 1px; background: linear-gradient(90deg, rgba(34,211,238,.0), rgba(34,211,238,.9), rgba(167,139,250,.9), rgba(34,211,238,.0)); margin: 26px 0; border-radius: 999px; }
+
+    a.button { display:inline-block; text-decoration:none; color: #020617; background: var(--primary); padding: 10px 14px; border-radius: 12px; font-weight: 700; border: 1px solid rgba(0,0,0,.1); box-shadow: 0 8px 20px var(--ring); }
+    a.button:hover { transform: translateY(-1px); }
+
+.footer {
+  background: #222;
+  color: #ddd;
+  font-family: Arial, sans-serif;
+  padding: 5px 0;   /* instead of something like 20px */
+  margin: 0;        /* ensure no outer margin */
+  
+  font-size: 14px;       
+  
+}
+
+.footer-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* Footer sections */
+.footer-section h3 {
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-section ul li {
+  margin: 8px 0;
+}
+
+.footer-section ul li a {
+  color: #ddd;
+  text-decoration: none;
+}
+
+.footer-section ul li a:hover {
+  color: #ffc107;
+}
+
+/* Social Media Icons */
+.social-links a img {
+  width: 28px;
+  margin-right: 10px;
+  filter: brightness(0) invert(1);
+  transition: 0.3s;
+}
+.social-links a img:hover {
+  filter: none;
+}
+
+/* Side-by-side maps */
+.footer-maps {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  grid-column: 1 / -1; /* span full width in grid */
+}
+
+.footer-maps .footer-section {
+  background: #1b1b1b;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+/* Footer Bottom */
+.footer-bottom {
+  text-align: center;
+  margin-top: 10px;
+  border-top: 1px solid #444;
+  padding: 8px 0;
+  font-size: 14px;
+  color: #aaa;
+  grid-column: 1 / -1;
+}
+
+/* Responsive: stack maps on small screens */
+@media (max-width: 768px) {
+  .footer-maps {
+    grid-template-columns: 1fr;
+  }
+}
+
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <img src="logo-Photoroom.png" alt="CCOEW Logo">
+      <span>Placement Cell, CCOEW Nagpur</span>
+    </div>
+    <nav>
+    <a href="home.html">Overview</a>
+    <a href="about us.html">About us</a>
+    <a href="PLACEMENT RECORD.html">Placement records</a>
+    <a href="Training Initiatives.html">Training Events</a>
+    <a href="contact.html">Contact Us</a>
+  </nav>
+  </header>
+
+  <main class="container">
+    <h1>Training & Placement Cell</h1>
+    <p class="lead">Our Training & Placement (T&P) Cell bridges students with industry through continuous skill-building, internships, and on-campus recruitment. We collaborate with top recruiters, run finishing-school programs, and track outcomes to ensure every graduate is job-ready.</p>
+    <div class="accent-bar"></div>
+
+    <section class="grid grid-2">
+      <article class="card">
+        <h2 class="section-title">Objectives & Roles</h2>
+        <ul >
+          <li>Organize aptitude, coding, and soft-skill training across semesters.</li>
+          <li>Build industry partnerships and coordinate internships & campus drives.</li>
+          <li>Mentor students on profiles, resumes, and interview preparation.</li>
+          <li>Maintain placement statistics, MoUs, and recruiter feedback.</li>
+        </ul>
+
+        <h3 class="section-title" style="margin-top:22px">General Policies</h3>
+        <ul >
+          <li>Students must register with the T&P Cell to participate in placements.</li>
+          <li>Professional discipline and punctuality are expected during all drives.</li>
+          <li>Once placed, students may not be allowed in further recruitment processes.</li>
+          <li>The T&P Cell reserves the right to update policies when required.</li>
+        </ul>
+      </article>
+
+      <aside class="card">
+        <h2 class="section-title">Infrastructure & Facilities</h2>
+        <ul>
+          <li>Dedicated interview cabins and GD rooms with recording support.</li>
+          <li>Computer labs with coding platforms and test facilities.</li>
+          <li>Smart seminar hall for pre-placement talks & workshops.</li>
+          <li>Recruiter lounge, Wi-Fi, parking, and hospitality support.</li>
+        </ul>
+
+        <div class="stats">
+          <div class="stat"><div class="num">15+</div><div class="label">Recruiters</div></div>
+          <div class="stat"><div class="num">₹ 10.77 LPA</div><div class="label">Highest CTC*</div></div>
+          <div class="stat"><div class="num">₹ 4.89 LPA</div><div class="label">Average CTC*</div></div>
+          <div class="stat"><div class="num">70+</div><div class="label">Students placed</div></div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="card" style="margin-top:22px">
+      <h2 class="section-title">Placement Officer's Message</h2>
+      <div class="po">
+        <img src="https://cumminscollege.edu.in/UserData/uploads/pages/223/manish.jpg" alt="Placement Officer" />
+        <div>
+          <blockquote>
+            "At <strong>Cummins College of Engineering for Women</strong>, we believe employability is a skill-set, not a one-day event. Our calendar blends industry-led training, mock assessments, and live projects so students grow into professionals who can contribute from Day 1. We welcome recruiters to experience our talent pool and collaborate for mutual growth."
+          </blockquote>
+          <cite>
+            — <strong>Er. Manish Raut</strong>, Training & Placement Officer<br>
+            Email: manish@college.edu<br>
+            Phone: +91 9881716620 / +91 8411915585
+          </cite>
+        </div>
+      </div>
+    </section>
+
+    <section style="margin-top:22px">
+      <h2 class="section-title">T&P Team</h2>
+      <div class="team" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+        <!-- Members -->
+        <div class="member">
+          <img src="https://cumminscollege.edu.in/UserData/uploads/pages/223/abhilasha-borkar.jpg" alt="Member" />
+          <div>
+            <div><strong>Er. Abhilasha Borkar</strong></div>
+            <div class="role">CE dept incharge</div>
+            <div>Email: abhilashaborkar@cumminscollege.edu.in</div>
+            <div>Phone: +91 8983284938</div>
+          </div>
+        </div>
+        <div class="member">
+          <img src="https://cumminscollege.edu.in/UserData/uploads/pages/223/44.jpeg" alt="Member" />
+          <div>
+            <div><strong>Er. Tushar Joshi</strong></div>
+            <div class="role">ETC dept incharge</div>
+            <div>Email: tusharjoshi@cumminscollege.edu.in</div>
+            <div>Phone: +91 9422561121</div>
+          </div>
+        </div>
+        <div class="member">
+          <img src="https://cumminscollege.edu.in/UserData/uploads/pages/223/Prasanna.jpeg" alt="Member" />
+          <div>
+            <div><strong>Dr. Prasanna Mahankar</strong></div>
+            <div class="role">Mech dept incharge</div>
+            <div>Email: prasannamahankar@college.edu.in</div>
+            <div>Phone: +91 8605184649</div>
+          </div>
+        </div>
+        <div class="member">
+          <img src="https://cumminscollege.edu.in/UserData/uploads/pages/223/rashmi.jpg" alt="Member" />
+          <div>
+            <div><strong>Prof. Rashmi Deshpande</strong></div>
+            <div class="role">Allied Science dept incharge</div>
+            <div>Email: rashmideshpande@college.edu.in</div>
+            <div>Phone: +91 9822695556</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+<footer class="footer">
+  <div class="footer-container">
+
+   <!-- Quick Links -->
+    <div class="footer-section">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="about us.html">About Us</a></li>
+        <li><a href="PLACEMENT RECORD.html">Placement Records</a></li>
+        <li><a href="Training Initiatives.html">Training Initiatives</a></li>
+        <li><a href="eventcalender.html">Events Calendar</a></li>
+        
+      </ul>
+    </div>
+
+    <!-- Contact Info -->
+    <div class="footer-section">
+      <h3>Contact Us</h3>
+      <p>Training & Placement Cell</p>
+      <p>Email: <a href="mailto:office@cumminscollege.edu.in">office@cumminscollege.edu.in</a></p>
+      <p>Phone: +91 9420410225</p>
+      <p>Office Hours: 9 AM – 5 PM</p>
+    </div>
+
+    <!-- Social Media -->
+    <div class="footer-section">
+      <h3>Follow Us</h3>
+      <div class="social-links">
+        <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384014.png" alt="Facebook"></a>
+        <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384017.png" alt="Twitter"></a>
+        <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384015.png" alt="Instagram"></a>
+        <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384012.png" alt="LinkedIn"></a>
+      </div>
+    </div>
+
+    <!-- Address + Map -->
+     <div class="footer-maps">
+    <div class="footer-section">
+      <h3>Institute Location</h3>
+      <p>Cummins College of Engineering for Women,<br>Mouje Sukli (Gupchup), Hingna,<br> Nagpur, Maharashtra - 441110,</p>
+      <iframe 
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3723.1432532914478!2d78.97666787750838!3d21.06693993644762!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bd495a9dc651331%3A0x3416f35218f1e3e2!2sCummins%20College%20Of%20Engineering%20For%20Women%2C%20Nagpur!5e0!3m2!1sen!2sin!4v1755624821888!5m2!1sen!2sin" 
+        width="100%" 
+        height="150" 
+        style="border:0; border-radius:8px;" 
+        allowfullscreen="" 
+        loading="lazy">
+      </iframe>
+      </div>
+    <div class="footer-section">
+      <h3>City Office</h3>
+      <p>Maharshi Karve Stree Shikshan Samstha's Nargundkar Shaikshanik Prakalp,<br> Khamla Road, Deonagar,<br> Nagpur, Maharashtra - 440015</p>
+      <iframe 
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d59549.852105600396!2d78.99113803243178!3d21.11791754019956!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bd4bf7e8ccee71d%3A0x1e1715162d921e28!2sMaharshi%20Karve%20Stree%20Shikshan%20Sanstha%2C%20Cummins%20College%20for%20Women%2C%20city%20office!5e0!3m2!1sen!2sin!4v1755624562818!5m2!1sen!2sin" 
+        width="100%" 
+        height="150" 
+        style="border:0; border-radius:8px;" 
+        allowfullscreen="" 
+        loading="lazy">
+      </iframe>
+
+  </div>
+</div>
+</div>
+  <div class="footer-bottom">
+    <p>© 2025 Cummins College of Engineering for Women | Training & Placement Cell</p>
+  </div>
+</footer>
+</body>
+                                                                                                          </html>

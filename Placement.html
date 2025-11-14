@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Placement Records</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+  <style>
+    header {
+      background-color: #f58822;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      height: 30px;
+    }
+
+    header .logo {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+header .logo img {
+  width: 90px;
+  height: 65px;     /* Adjust size of logo */
+  margin-right: 12px; /* Space between logo and text */
+}
+
+    header nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: -30px;
+      font-size: 17px;
+      transition: color 0.3s;
+      margin-right: 60px
+    }
+
+    header nav a:hover {
+      color: #28345b;
+    }
+        .footer {
+  background: #222;
+  color: #ddd;
+  font-family: Arial, sans-serif;
+  padding: 5px 0;   /* instead of something like 20px */
+  margin: 0;        /* ensure no outer margin */
+  
+  font-size: 14px;       
+  
+}
+
+.footer-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* Footer sections */
+.footer-section h3 {
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-section ul li {
+  margin: 8px 0;
+}
+
+.footer-section ul li a {
+  color: #ddd;
+  text-decoration: none;
+}
+
+.footer-section ul li a:hover {
+  color: #ffc107;
+}
+
+/* Social Media Icons */
+.social-links a img {
+  width: 28px;
+  margin-right: 10px;
+  filter: brightness(0) invert(1);
+  transition: 0.3s;
+}
+.social-links a img:hover {
+  filter: none;
+}
+
+/* Side-by-side maps */
+.footer-maps {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  grid-column: 1 / -1; /* span full width in grid */
+}
+
+.footer-maps .footer-section {
+  background: #1b1b1b;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+/* Footer Bottom */
+.footer-bottom {
+  text-align: center;
+  margin-top: 10px;
+  border-top: 1px solid #444;
+  padding: 8px 0;
+  font-size: 14px;
+  color: #aaa;
+  grid-column: 1 / -1;
+}
+
+/* Responsive: stack maps on small screens */
+@media (max-width: 768px) {
+  .footer-maps {
+    grid-template-columns: 1fr;
+  }
+}
+
+    .carousel1-container {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      padding: 2px 0;
+    }
+
+    .carousel1-track {
+      display: flex;
+      gap: 2px;
+      padding: 0 2px;
+      animation: scrollLeft 25s linear infinite; /* continuous scrolling */
+    }
+
+    .testimonial1-card {
+      flex: 0 0 300px;
+      background-color: #000000;
+      border-radius: 12px;
+      padding: 20px;
+      color:white;
+      text-align: center;
+      box-shadow: 0 6px 12px rgba(250, 245, 245, 0.4);
+      transition: transform 0.3s ease;
+    }
+
+    .testimonial1-card:hover {
+      transform: scale(1.05);
+    }
+
+    .testimonial1-card img,
+    .testimonial1-card video {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 15px;
+    }
+
+    .testimonial-card h3 {
+      margin: 10px 0;
+      font-size: 1.2rem;
+      color: #f0f0f0;
+    }
+
+    .testimonial-card p {
+      font-size: 0.95rem;
+      line-height: 1.5;
+      color: #ccc;
+    }
+
+    /* Infinite scroll effect */
+    @keyframes scrollLeft {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); } /* moves half track, then loops */
+    }
+
+    @media (max-width: 768px) {
+      .carousel1-track {
+        gap: 10px;
+        padding: 0 20px;
+      }
+      .testimonial-card {
+        flex: 0 0 260px;
+      }
+    }
+  
+    .carousel-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 25px;  /* instead of full screen */
+    }
+
+    .carousel {
+      max-width: 600px;
+      width: 100%;
+    }
+
+    .carousel-item {
+      height: 400px;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      color: #fff;
+      border-radius: 10px;
+      transition: transform 2s ease-in-out; /* smooth slow slide */
+    }
+
+    .carousel-caption {
+      background-color: rgba(0,0,0,0.5);
+      border-radius: 10px;
+      padding: 20px;
+      max-height: 90%;
+      overflow-y: auto;
+    }
+
+    .company-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .company-list li {
+      background-color: rgba(255,255,255,0.2);
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 0.9rem;
+    }
+  </style>
+  <body>
+     <header>
+  <div class="logo">
+    <img src="logo-Photoroom.jpg" alt="CCOEW Logo", style="height:40px; width: 60px;">
+    <span>Placement Cell, CCOEW Nagpur</span>
+  </div>
+  <nav>
+    <a href="#">Overview</a>
+    <a href="#">About us</a>
+    <a href="#">Placement records</a>
+    <a href="#">Training events</a>
+    <a href="#">Contact Us</a>
+  </nav>
+</header>
+<div class="carousel-container">
+  <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"></button>
+      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"></button>
+      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"></button>
+      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="3"></button>
+      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="4"></button>
+    </div>
+
+    <div class="carousel-container">
+  <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4000"> 
+    <!-- interval = 4000ms = 4 seconds (adjust as needed) -->
+
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"></button>
+      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"></button>
+      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"></button>
+      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="3"></button>
+      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="4"></button>
+    </div>
+   <h2 class="text-center mb-4">OUR RECRUITERS</h2>
+    <div class="carousel-inner">
+
+      <!-- PRODUCT BASE COMPANIES -->
+      <div class="carousel-item active" style="background-image: url('1.png');">
+        <div class="carousel-caption d-md-block">
+          <h5>PRODUCT BASE COMPANIES</h5>
+          <ul class="company-list">
+            <li>Palo Alto Networks</li>
+            <li>Intuit India Product Development Center Pvt. Ltd.</li>
+            <li>Paypal</li>
+            <li>PhonePe Pvt Ltd</li>
+            <li>Providence Global Center</li>
+            <li>Cisco</li>
+            <li>Tesco</li>
+            <li>Deutsche India Private Limited</li>
+            <li>BrowserStack</li>
+            <li>Nike India Technology</li>
+            <li>GSK (Tech arm)</li>
+            <li>Gartner</li>
+            <li>Blueflame Labs</li>
+            <li>Amadeus</li>
+            <li>KonvergeAI</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- FINCORP COMPANIES -->
+      <div class="carousel-item" style="background-image: url('2.png');">
+        <div class="carousel-caption d-md-block">
+          <h5>FINCORP COMPANIES</h5>
+          <ul class="company-list">
+            <li>Citi</li>
+            <li>McKinsey & Co.</li>
+            <li>HSBC</li>
+            <li>PepsiCo GBS</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- SERVICE COMPANIES -->
+      <div class="carousel-item" style="background-image: url('3.png');">
+        <div class="carousel-caption d-md-block">
+          <h5>SERVICE COMPANIES</h5>
+          <ul class="company-list">
+            <li>ConsultAdd</li>
+            <li>Tech Mahindra</li>
+            <li>Infocepts</li>
+            <li>KPIT (IT arm)</li>
+            <li>HCL Technologies</li>
+            <li>Capgemini</li>
+            <li>DXC</li>
+            <li>Wipro</li>
+            <li>Infosys</li>
+            <li>TCS</li>
+            <li>NEEYAMO</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- AUTOMOBILE COMPANIES -->
+      <div class="carousel-item" style="background-image: url('4.png');">
+        <div class="carousel-caption d-md-block">
+          <h5>AUTOMOBILE COMPANIES</h5>
+          <ul class="company-list">
+            <li>KPIT – Vehicle Engineering and Design</li>
+            <li>MG Motor</li>
+            <li>Wirtgen Group – A John Deere Company</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- MANUFACTURING COMPANIES -->
+      <div class="carousel-item" style="background-image: url('5.png');">
+        <div class="carousel-caption d-md-block">
+          <h5>MANUFACTURING COMPANIES</h5>
+          <ul class="company-list">
+            <li>Cummins India Limited</li>
+            <li>Caterpillar</li>
+            <li>Eaton</li>
+            <li>Kohler</li>
+            <li>Siemens</li>
+            <li>Kennametal India Limited, Bangalore</li>
+            <li>ifm engineering private limited</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+      <span class="carousel-control-next-icon"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+</div>
+
+
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+      <span class="carousel-control-next-icon"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+</div>
+
+
+<body class="bg-light">
+
+  <div class="container mt-5">
+ 
+
+    <table class="table table-bordered table-hover align-middle text-center">
+      <thead class="table-warning">
+        <tr>
+          <th scope="col" style="color: #f58822;">Sr.No.</th>
+          <th scope="col" style="color: #f58822;">Academic Year</th>
+          <th scope="col" style="color: #f58822;">List of the placed students</th>
+        </tr>
+      </thead>
+      <div class="container my-5">
+  <div class="row g-3 justify-content-center">
+    <H1 style="text-align: center;">STATISTICAL ANALYSIS</H1>
+    <div class="col-md-4">
+      <div class="card shadow-sm">
+        <video autoplay muted loop class="card-img-top" style="height: 300px; width: 100%;">
+          <source src="20-21.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <div class="card-body text-center">
+          <h5 class="card-title">Academic Year 2020-21</h5>
+        </div>
+      </div>
+    </div>
+   
+    <div class="col-md-4">
+      <div class="card shadow-sm">
+        <video autoplay muted loop class="card-img-top" style="height: 300px; width: 100%;">
+          <source src="21-22.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <div class="card-body text-center">
+          <h5 class="card-title">Academic Year 2021-22</h5>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card shadow-sm">
+        <video autoplay muted loop class="card-img-top" style="height: 300px; width: 100%;">
+          <source src="22-23.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <div class="card-body text-center">
+          <h5 class="card-title">Academic Year 2022-23</h5>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <br>
+  <br>
+  <h2 class="text-center mb-4">PLACEMENT RECORDS</h2>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>2024-25</td>
+          <td>
+            <a href="Placed_Students_24-25.pdf" target="_blank" class="btn btn-info btn-sm fw-bold">View</a>
+          </td>
+        </tr>
+        <tr>
+                 <td>2</td>
+          <td>2022-23</td>
+          <td>
+            <a href="Placement2023-24.pdf" target="_blank" class="btn btn-info btn-sm fw-bold">View</a>
+          </td>
+        </tr>
+          <td>3</td>
+          <td>2022-23</td>
+          <td>
+            <a href="Placement2022-23.pdf" target="_blank" class="btn btn-info btn-sm fw-bold">View</a>
+          </td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>2021-22</td>
+          <td>
+            <a href="Placement2021-22.pdf" target="_blank" class="btn btn-info btn-sm fw-bold">View</a>
+          </td>
+        </tr>
+        <tr>
+          
+        </tr>
+      </tbody>
+    </table>
+  </div>
+ <!--video -->
+<br>
+  <br>
+</div>  <h1 style="text-align: center;">TESTIMONIALS..</h1>
+  <div class="carousel1-container">
+    <div class="carousel1-track">
+      <!-- Original cards -->
+     
+      <div class="testimonial1-card">
+        <img src="sayli.jpeg" alt="Sayli Bhongade">
+        <h3>Sayli Bhongade</h3>
+        <p>“Immense gratitude to Cummins College for hands-on learning and real-world experiences. These opportunities have shaped my skills and confidence for the future.”</p>
+      </div>
+
+      <div class="testimonial1-card">
+        <img src="tanya.jpeg" alt="Tanaya Khond">
+        <h3>Tanaya Khond</h3>
+        <p>“The knowledge and support from Cummins helped me navigate challenges and land amazing opportunities. Truly transformative education.”</p>
+      </div>
+
+      <div class="testimonial1-card">
+        <img src="kalyani.jpeg" alt="Kalyani Kadwe">
+        <h3>Kalyani Kadwe</h3>
+        <p>“Cummins College empowered me with resilience and skill. Their training built my confidence and prepared me for the professional world.”</p>
+      </div>
+
+      <div class="testimonial1-card">
+        <img src="radhika.jpeg" alt="Radhika Naitam">
+        <h3>Radhika Naitam</h3>
+        <p>“The holistic development at Cummins College laid a strong foundation for my career. I’ll always cherish the support and memories.”</p>
+      </div>
+
+      <div class="testimonial1-card">
+        <img src="yuvika.jpeg" alt="Yuvika Patil">
+        <h3>Yuvika Patil</h3>
+        <p>“Cummins College provided me with the skills and confidence to excel in my career. The supportive environment and practical learning were invaluable.”</p>
+      </div>
+
+      <!-- Duplicate cards for infinite loop -->
+      <div class="testimonial1-card">
+        <img src="sayli.jpeg" alt="Sayli Bhongade">
+        <h3>Sayli Bhongade</h3>
+        <p>“Immense gratitude to Cummins College for hands-on learning and real-world experiences. These opportunities have shaped my skills and confidence for the future.”</p>
+      </div>
+
+      <div class="testimonial1-card">
+        <img src="tanya.jpeg" alt="Tanaya Khond">
+        <h3>Tanaya Khond</h3>
+        <p>“The knowledge and support from Cummins helped me navigate challenges and land amazing opportunities. Truly transformative education.”</p>
+      </div>
+
+      <div class="testimonial1-card">
+        <img src="kalyani.jpeg" alt="Kalyani Kadwe">
+        <h3>Kalyani Kadwe</h3>
+        <p>“Cummins College empowered me with resilience and skill. Their training built my confidence and prepared me for the professional world.”</p>
+      </div>
+
+      <div class="testimonial1-card">
+        <img src="radhika.jpeg" alt="Radhika Naitam">
+        <h3>Radhika Naitam</h3>
+        <p>“The holistic development at Cummins College laid a strong foundation for my career. I’ll always cherish the support and memories.”</p>
+      </div>
+
+      <div class="testimonial1-card">
+        <img src="yuvika.jpeg" alt="Yuvika Patil">
+        <h3>Yuvika Patil</h3>
+        <p>“Cummins College provided me with the skills and confidence to excel in my career. The supportive environment and practical learning were invaluable.”</p>
+      </div>
+    </div>
+  </div>
+  <br>
+  <br>
+  ,br>
+<footer class="footer">
+  <div class="footer-container">
+
+    <!-- Quick Links -->
+    <div class="footer-section">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Placement Records</a></li>
+        <li><a href="#">Training Initiatives</a></li>
+      </ul>
+    </div>
+
+    <!-- Contact Info -->
+    <div class="footer-section">
+      <h3>Contact Us</h3>
+      <p>Training & Placement Cell</p>
+      <p>Email: <a href="mailto:office@cumminscollege.edu.in">office@cumminscollege.edu.in</a></p>
+      <p>Phone: +91 9420410225</p>
+      <p>Office Hours: 9 AM – 5 PM</p>
+    </div>
+
+    <!-- Social Media -->
+    <div class="footer-section">
+      <h3>Follow Us</h3>
+      <div class="social-links">
+        <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384014.png" alt="Facebook"></a>
+        <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384017.png" alt="Twitter"></a>
+        <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384015.png" alt="Instagram"></a>
+        <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384012.png" alt="LinkedIn"></a>
+      </div>
+    </div>
+
+    <!-- Address + Map -->
+     <div class="footer-maps">
+    <div class="footer-section">
+      <h3>Institute Location</h3>
+      <p>Cummins College of Engineering for Women,<br>Mouje Sukli (Gupchup), Hingna,<br> Nagpur, Maharashtra - 441110,</p>
+      <iframe 
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3723.1432532914478!2d78.97666787750838!3d21.06693993644762!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bd495a9dc651331%3A0x3416f35218f1e3e2!2sCummins%20College%20Of%20Engineering%20For%20Women%2C%20Nagpur!5e0!3m2!1sen!2sin!4v1755624821888!5m2!1sen!2sin" 
+        width="100%" 
+        height="150" 
+        style="border:0; border-radius:8px;" 
+        allowfullscreen="" 
+        loading="lazy">
+      </iframe>
+      </div>
+    <div class="footer-section">
+      <h3>City Office</h3>
+      <p>Maharshi Karve Stree Shikshan Samstha's Nargundkar Shaikshanik Prakalp,<br> Khamla Road, Deonagar,<br> Nagpur, Maharashtra - 440015</p>
+      <iframe 
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d59549.852105600396!2d78.99113803243178!3d21.11791754019956!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bd4bf7e8ccee71d%3A0x1e1715162d921e28!2sMaharshi%20Karve%20Stree%20Shikshan%20Sanstha%2C%20Cummins%20College%20for%20Women%2C%20city%20office!5e0!3m2!1sen!2sin!4v1755624562818!5m2!1sen!2sin" 
+        width="100%" 
+        height="150" 
+        style="border:0; border-radius:8px;" 
+        allowfullscreen="" 
+        loading="lazy">
+      </iframe>
+
+  </div>
+</div>
+</div>
+  <div class="footer-bottom">
+    <p>&copy; 2025 Cummins College of Engineering for Women | Training & Placement Cell</p>
+  </div>
+</footer>
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+<script>
+  // Smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      e.preventDefault();
+      document.querySelector(this.getAttribute('href')).scrollIntoView({
+        behavior: 'smooth'
+      });
+    });
+  });
+</script>
